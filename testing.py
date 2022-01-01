@@ -7,9 +7,10 @@ from scipy.integrate import ode
 from mpl_toolkits.mplot3d import Axes3D
 import plotly.graph_objects as go
 import plotly.io as pio
+from Orbit import *
 
-r_earth = 6371 # km
-earth_mu = 398600 # km^3 s^-2
+r_earth = 6371000
+earth_mu = 3.986004418e14
 
 # deprecated
 def plot(r):
@@ -59,12 +60,12 @@ def plot(r):
 
 # Creates a plotly mesh consisting of a sphere
 def sphere_plot(size, clr, dist=0):
-    theta = np.linspace(0, 2*np.pi, 100)
-    phi = np.linspace(0, np.pi, 100)
+    theta = np.linspace(0, 2*np.pi, 25)
+    phi = np.linspace(0, np.pi, 25)
 
     x0 = dist + size * np.outer(np.cos(theta), np.sin(phi))
     y0 = size * np.outer(np.sin(theta), np.sin(phi))
-    z0 = size * np.outer(np.ones(100), np.cos(phi))
+    z0 = size * np.outer(np.ones(25), np.cos(phi))
 
     trace = go.Surface(x = x0, y = y0, z = z0, colorscale = [[0,clr], [1,clr]], opacity=0.5)
     trace.update(showscale=False)
@@ -100,23 +101,23 @@ def plot_alt(r):
                 b=10,
                 t=10
             ),
-            scene=dict(
-                xaxis=dict(
-                    showgrid=False,
-                    zeroline=False,
-                    visible=False
-                ),
-                yaxis = dict(
-                    showgrid=False,
-                    zeroline=False,
-                    visible=False
-                ),
-                zaxis = dict(
-                    showgrid=False,
-                    zeroline=False,
-                    visible=False
-                )
-            )
+            # scene=dict(
+            #     xaxis=dict(
+            #         showgrid=False,
+            #         zeroline=False,
+            #         visible=False
+            #     ),
+            #     yaxis = dict(
+            #         showgrid=False,
+            #         zeroline=False,
+            #         visible=False
+            #     ),
+            #     zaxis = dict(
+            #         showgrid=False,
+            #         zeroline=False,
+            #         visible=False
+            #     )
+            # )
         ))
     fig.show()
 
@@ -143,13 +144,24 @@ def orbit_ode(t, y, mu):
 # Main script (propagates orbit)
 if __name__ == '__main__':
 
-    # Set up orbit initial conditions
-    r_mag = r_earth + 500 # km
-    v_mag = np.sqrt(earth_mu / r_mag) # km/sec
+    # # Set up orbit initial conditions
+    # r_mag = r_earth + 500 # km
+    # v_mag = np.sqrt(earth_mu / r_mag) # km/sec
 
-    # Set up initial position and velocity vectors
-    r0 = [r_mag, 0, 0]
-    v0 = [0, v_mag, 0]
+    # # Set up initial position and velocity vectors
+    # r0 = [r_mag, 0, 0]
+    # v0 = [0, v_mag, 0]
+
+    circular = Orbit(0, 2*r_earth+100000, np.deg2rad(10), 0, 0, 0)
+    x0, y0, z0 = circular.get_orbital_position(0)
+    vx0, vy0, vz0 = circular.get_orbital_velocity(0)
+
+    r0 = [x0, y0, z0]
+    v0 = [vx0, vy0, vz0]
+
+    print(circular.get_orbital_period())
+    print(r0)
+    print(v0)
 
     tspan = 1000*60.0
     dt = 100.0
@@ -181,7 +193,7 @@ if __name__ == '__main__':
     
     rs = ys[:,:3]
 
-    print(rs[:,:3])
+    # print(rs[:,:3])
 
     plot_alt(rs)
 

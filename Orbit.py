@@ -56,6 +56,7 @@ class Orbit():
         self.argp = argp
         self.tra = tra
         self.sgp = sgp
+        self.epoch = epoch
 
     # Step 1a from conversion docs: calculate mean motion
     def get_mean_motion(self):
@@ -114,20 +115,24 @@ class Orbit():
         --------
         The true anomaly for time t.
         """
-        E = self.get_eccentric_anomaly(t)
+        E = self.get_eccentric_anomaly(t)[0]
+        print(self.ecc, E)
         nu = 2*atan2(
             np.sqrt(1 - self.ecc**2) * sin(E),
             cos(E - self.ecc)
         )
+        return nu
 
     # Step 4: compute the orbit radius
     def get_radius(self, t):
         nu = self.get_true_anomaly(t)
         r = (self.sma*(1-(self.ecc**2))) / (1 + self.ecc*cos(nu))
+        return r
 
     # Step 5: Calculate specific angular momentum
     def get_specific_angular_momentum(self):
         h = np.sqrt(self.sgp*self.sma*(1-(self.ecc**2)))
+        return h
 
     # Step 6: calculate position components in Cartesian coordinates
     def get_orbital_position(self, t):
@@ -143,6 +148,30 @@ class Orbit():
         z = r*(sin(self.inc)*sin(self.argp + nu))
 
         return x, y, z
+
+    # Step 7: Determine velocity components in cartesian coordinates
+    def get_orbital_velocity(self, t):
+        r = self.get_radius(t)
+        nu = self.get_true_anomaly(t)
+        h = self.get_specific_angular_momentum()
+        x, y, z = self.get_orbital_position(t)
+        p = self.sma*(1-(self.ecc**2))
+
+
+        vx = ((x*h*self.ecc)/(r*p))*sin(nu)
+        - (h/r)*(cos(self.raan)*sin(self.argp + nu)
+        + sin(self.raan)*cos(self.argp + nu)*cos(self.inc))
+
+        vy = ((y*h*self.ecc)/(r*p))*sin(nu)
+        - (h/r)*(sin(self.raan)*sin(self.argp + nu)
+        - cos(self.raan)*cos(self.argp + nu)*cos(self.inc))
+
+        vz = ((z*h*self.ecc)/(r*p))*sin(nu)
+        + (h/r)*sin(self.inc)*cos(self.argp + nu)
+
+        return vx, vy, vz
+        # TODO: something wrong with velocity. Fix. Check out the
+        # rene-schwarz.com algorithm.
 
     def get_orbital_period(self):
         T = 2*np.pi*np.sqrt((self.sma**3)/self.sgp)
