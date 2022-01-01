@@ -2,8 +2,10 @@
 # https://www.youtube.com/watch?v=7JY44m6eemo&t=0s
 
 import numpy as np
-from plot_tools import *
+from archive.plot_tools import *
 from Orbit import *
+from vpython import *
+
 
 r_earth = 6371000
 earth_mu = 3.986004418e14
@@ -43,3 +45,4 @@ earth_mu = 3.986004418e14
 
 
 if __name__ == '__main__':
+    pass
