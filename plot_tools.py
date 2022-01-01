@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import plotly.io as pio
 
 # Creates a plotly mesh consisting of a sphere
-def sphere_plot(size, clr, dist=0):
+def sphere_plot(size, clr, dist=0, opacity=0.75):
     theta = np.linspace(0, 2*np.pi, 25)
     phi = np.linspace(0, np.pi, 25)
 
@@ -11,7 +11,7 @@ def sphere_plot(size, clr, dist=0):
     y0 = size * np.outer(np.sin(theta), np.sin(phi))
     z0 = size * np.outer(np.ones(25), np.cos(phi))
 
-    trace = go.Surface(x = x0, y = y0, z = z0, colorscale = [[0,clr], [1,clr]], opacity=0.5)
+    trace = go.Surface(x = x0, y = y0, z = z0, colorscale = [[0,clr], [1,clr]], opacity=opacity)
     trace.update(showscale=False)
     
     return trace
@@ -30,6 +30,20 @@ def orbit_plot(rs):
         ))
     return orbit
 
+def orbit_animation(rs):
+    N = range(len(rs[:,0]))
+    frames = [go.Frame(data = [go.Scatter3d(
+        x=rs[[k,0]],
+        y=rs[[k,1]],
+        z=rs[[k,2]])],
+        traces = [0],
+        name=f'frame{k}'
+    ) for k in N]
+    return frames
+    
+
+
+
 def space_plot(plotting_data, axes=False):
     default_layout = go.Layout(
             template='plotly_dark',
@@ -39,10 +53,14 @@ def space_plot(plotting_data, axes=False):
                 l=10,
                 b=10,
                 t=10
-            ))
+            ),
+            width=800,
+            height=600
+            )
     fig = go.Figure(
         data=plotting_data,
-        layout=default_layout)
+        layout=default_layout,
+        )
     
     # if ~axes:
     #     fig.update_layout(go.Layout(
