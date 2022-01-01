@@ -1,19 +1,9 @@
 # Orbit.py: Defines a Keplerian elliptical orbit
 import numpy as np
+from scipy.integrate import ode
 import foe_constants as fc
 import ComputationalMethods as cm
-from math import cos, sin, atan2
-
-### Helper Functions
-# TODO: best practice for putting this somewhere?
-def f_ecc(E_guess, args):
-    # Kepler's Equation for Newton's Method
-    return E_guess - args[0] * sin(E_guess) - args[1]
-
-def f_prime_ecc(E_guess, args):
-    # Kepler's Equation - First Derivative for Newton's Method
-    return 1 - args[0] * cos(E_guess)
-
+from math import cos, sin
 
 ### Orbit Class
 class Orbit():
@@ -58,127 +48,100 @@ class Orbit():
         self.sgp = sgp
         self.epoch = epoch
 
-    # Step 1a from conversion docs: calculate mean motion
-    def get_mean_motion(self):
-        n = np.sqrt(self.sgp/(self.sma**3))
-        return n
-
-    # Step 1b from conversion docs: calculate mean anomaly
-    def get_mean_anomaly(self, t) -> float:
-        """Computes the mean anomaly for time t.
-
-        Parameters
-        ---------
-        t : float
-            The time t since epoch
-
-        Returns
-        --------
-        The mean anomaly for time t.
-        """
-        n = self.get_mean_motion()
-        M = n*(t - self.epoch)
-
-        return M
-
-    # Step 2: calculate eccentric anomaly using Newton's method
-    def get_eccentric_anomaly(self, t):
-        """Computes the eccentric anomaly for time t since epoch.
+    def get_cartesian(self):
+        """Returns the Cartesian state vector in geocentric-equatorial reference.
         
-        Parameters
+        Description
         --------
-        t : float
-            The time t since epoch
+        get_cartesian() returns the Cartesian state vector in the geocentric-equatorial
+        reference system at epoch. Essentially it converts the Keplerian state vector
+        to a Cartesian state vector (say, for propagating orbits)
 
-        Returns
+        Credit
         --------
-        The eccentric anomaly for time t.
+        Credit to Thameur Chebbi who originally developed Kepler2Carts for MATLAB.
+        https://www.mathworks.com/matlabcentral/fileexchange/80632-kepler2carts
         """
-        M = self.get_mean_anomaly(t)
-        args = [self.ecc, M]
-        # Initial guess
-        E0 = M - self.ecc
-        E, n = cm.newtons_single(f_ecc, f_prime_ecc, E0, args=args)
+        p = self.sma*(1-self.ecc**2)
+        r_0 = p / (1 + self.ecc * cos(self.tra))
 
-        return E, n
+        # Perifocal reference system coordinates
+        x_ = r_0 * cos(self.tra)
+        y_ = r_0 * sin(self.tra)
 
-    # Step 3: calculate true anomaly (closed-form)
-    def get_true_anomaly(self, t):
-        """Computes the true anomaly for time t since epoch.
+        Vx_ = -(self.sgp/p)**(1/2) * sin(self.tra)
+        Vy_ = (self.sgp/p)**(1/2) * (self.ecc + cos(self.tra))
 
-        Parameters
-        --------
-        t : float
-            The time t since epoch
+        print(Vx_, Vy_)
 
-        Returns
-        --------
-        The true anomaly for time t.
-        """
-        E = self.get_eccentric_anomaly(t)[0]
-        print(self.ecc, E)
-        nu = 2*atan2(
-            np.sqrt(1 - self.ecc**2) * sin(E),
-            cos(E - self.ecc)
-        )
-        return nu
+        # Geocentric-equatorial reference system
+        # NOTE: must use \ to continue line in python
+        x = (cos(self.raan) * cos(self.argp) - sin(self.raan) * sin(self.argp) * cos(self.inc)) * x_ \
+        + (-cos(self.raan) * sin(self.argp) - sin(self.raan) * cos(self.argp) * cos(self.inc)) * y_
+        y = (sin(self.raan) * cos(self.argp) + cos(self.raan) * sin(self.argp) * cos(self.inc)) * x_ \
+        + (-sin(self.raan) * sin(self.argp) + cos(self.raan) * cos(self.argp) * cos(self.inc)) * y_
+        z = (sin(self.argp) * sin(self.inc)) * x_ + (cos(self.argp) * sin(self.inc)) * y_
 
-    # Step 4: compute the orbit radius
-    def get_radius(self, t):
-        nu = self.get_true_anomaly(t)
-        r = (self.sma*(1-(self.ecc**2))) / (1 + self.ecc*cos(nu))
-        return r
+        Vx = (cos(self.raan) * cos(self.argp) - sin(self.raan) * sin(self.argp) * cos(self.inc)) * Vx_ \
+        + (-cos(self.raan) * sin(self.argp) - sin(self.raan) * cos(self.argp) * cos(self.inc)) * Vy_
+        Vy = (sin(self.raan) * cos(self.argp) + cos(self.raan) * sin(self.argp) * cos(self.inc)) * Vx_ \
+        + (-sin(self.raan) * sin(self.argp) + cos(self.raan) * cos(self.argp) * cos(self.inc)) * Vy_
+        Vz = (sin(self.argp) * sin(self.inc)) * Vx_ + (cos(self.argp) * sin(self.inc)) * Vy_
 
-    # Step 5: Calculate specific angular momentum
-    def get_specific_angular_momentum(self):
-        h = np.sqrt(self.sgp*self.sma*(1-(self.ecc**2)))
-        return h
-
-    # Step 6: calculate position components in Cartesian coordinates
-    def get_orbital_position(self, t):
-        r = self.get_radius(t)
-        nu = self.get_true_anomaly(t)
-
-        x = r*(cos(self.raan)*cos(self.argp + nu) 
-        - sin(self.raan)*sin(self.argp + nu)*cos(self.inc))
-
-        y = r*(sin(self.raan)*cos(self.argp + nu)
-        + cos(self.raan)*sin(self.argp + nu)*cos(self.inc))
-
-        z = r*(sin(self.inc)*sin(self.argp + nu))
-
-        return x, y, z
-
-    # Step 7: Determine velocity components in cartesian coordinates
-    def get_orbital_velocity(self, t):
-        r = self.get_radius(t)
-        nu = self.get_true_anomaly(t)
-        h = self.get_specific_angular_momentum()
-        x, y, z = self.get_orbital_position(t)
-        p = self.sma*(1-(self.ecc**2))
-
-
-        vx = ((x*h*self.ecc)/(r*p))*sin(nu)
-        - (h/r)*(cos(self.raan)*sin(self.argp + nu)
-        + sin(self.raan)*cos(self.argp + nu)*cos(self.inc))
-
-        vy = ((y*h*self.ecc)/(r*p))*sin(nu)
-        - (h/r)*(sin(self.raan)*sin(self.argp + nu)
-        - cos(self.raan)*cos(self.argp + nu)*cos(self.inc))
-
-        vz = ((z*h*self.ecc)/(r*p))*sin(nu)
-        + (h/r)*sin(self.inc)*cos(self.argp + nu)
-
-        return vx, vy, vz
-        # TODO: something wrong with velocity. Fix. Check out the
-        # rene-schwarz.com algorithm.
+        return x, y, z, Vx, Vy, Vz
 
     def get_orbital_period(self):
+        """Returns the period of this Orbit.
+        """
         T = 2*np.pi*np.sqrt((self.sma**3)/self.sgp)
         return T
         
-    def propagate(self):
-        pass
+    def propagate(self, Nperiods=1, Nsteps=100, integrator='lsoda'):
+        """Propagates the orbit, returning a Cartesian state vector and time.
+
+        Parameters
+        --------
+        Nperiods : int
+            Defines the number of orbital periods to propagate (default 1)
+        Nsteps : int
+            Defines the number of steps per orbital period (default 100)
+        integrator : string
+            Defines which scipy integrator to use (default 'lsoda'). Other options
+            include 'rk45', 'rk23', etc.
+        """
+        # Default one period with 100 steps per periods
+        tspan = Nperiods*self.get_orbital_period()
+        dt = tspan/(Nsteps*Nperiods)
+        actual_steps = int(np.ceil(tspan/dt))
+
+        ys = np.zeros((actual_steps, 6)) # State vector initialization
+        ts = np.zeros((actual_steps, 1)) # Time vector initialization
+
+        # Initial conditions
+        x0, y0, z0, vx0, vy0, vz0 = self.get_cartesian()
+        r0 = [x0, y0, z0]
+        v0 = [vx0, vy0, vz0]
+
+        y0 = r0 + v0 # Concatenate lists
+        ys[0] = np.array(y0) # Convert to Numpy array
+
+        # Solve using scipy integration
+        step = 1
+        solver = ode(cm.orbit_ode)
+        solver.set_integrator(integrator)
+        solver.set_initial_value(y0, 0)
+        solver.set_f_params(self.sgp)
+
+        while solver.successful() and step < actual_steps:
+            solver.integrate(solver.t + dt)
+            ts[step] = solver.t
+            ys[step] = solver.y
+            step += 1
+        
+        return ys, ts
+
+
+
 
         
 

@@ -101,45 +101,26 @@ def plot_alt(r):
                 b=10,
                 t=10
             ),
-            # scene=dict(
-            #     xaxis=dict(
-            #         showgrid=False,
-            #         zeroline=False,
-            #         visible=False
-            #     ),
-            #     yaxis = dict(
-            #         showgrid=False,
-            #         zeroline=False,
-            #         visible=False
-            #     ),
-            #     zaxis = dict(
-            #         showgrid=False,
-            #         zeroline=False,
-            #         visible=False
-            #     )
-            # )
+            scene=dict(
+                xaxis=dict(
+                    showgrid=False,
+                    zeroline=False,
+                    visible=False
+                ),
+                yaxis = dict(
+                    showgrid=False,
+                    zeroline=False,
+                    visible=False
+                ),
+                zaxis = dict(
+                    showgrid=False,
+                    zeroline=False,
+                    visible=False
+                )
+            )
         ))
     fig.show()
 
-
-
-# This is our Gravitation ODE to solve
-def orbit_ode(t, y, mu):
-    # Recall the orbit can be defined by two 3D vectors
-    # The R vector is radius, V vector is velocity
-    rx, ry, rz, vx, vy, vz = y
-
-    # Convert position vector to numpy array
-    r = np.array([rx, ry, rz])
-
-    # Take the magnitude of r
-    norm_r = np.linalg.norm(r)
-
-    # Define the two-body acceleration
-    # Recall this is derived from Newton's Universal Law of Gravitation
-    ax, ay, az = -r*mu/norm_r**3
-
-    return [vx, vy, vz, ax, ay, az]
 
 # Main script (propagates orbit)
 if __name__ == '__main__':
@@ -152,14 +133,16 @@ if __name__ == '__main__':
     # r0 = [r_mag, 0, 0]
     # v0 = [0, v_mag, 0]
 
-    circular = Orbit(0, 2*r_earth+100000, np.deg2rad(10), 0, 0, 0)
-    x0, y0, z0 = circular.get_orbital_position(0)
-    vx0, vy0, vz0 = circular.get_orbital_velocity(0)
+    orbit1 = Orbit(0, 8500000, np.deg2rad(10), 0, 0, 0)
+    # x0, y0, z0 = circular.get_orbital_position(0)
+    # vx0, vy0, vz0 = circular.get_orbital_velocity(0)
+    [x0, y0, z0, vx0, vy0, vz0] = orbit1.get_cartesian()
+
 
     r0 = [x0, y0, z0]
     v0 = [vx0, vy0, vz0]
 
-    print(circular.get_orbital_period())
+    print(orbit1.get_orbital_period())
     print(r0)
     print(v0)
 
