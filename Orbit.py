@@ -1,7 +1,21 @@
 # Orbit.py: Defines a Keplerian elliptical orbit
 import numpy as np
 import foe_constants as fc
+import ComputationalMethods as cm
+from math import cos, sin, atan2
 
+### Helper Functions
+# TODO: best practice for putting this somewhere?
+def f_ecc(E_guess, args):
+    # Kepler's Equation for Newton's Method
+    return E_guess - args[0] * sin(E_guess) - args[1]
+
+def f_prime_ecc(E_guess, args):
+    # Kepler's Equation - First Derivative for Newton's Method
+    return 1 - args[0] * cos(E_guess)
+
+
+### Orbit Class
 class Orbit():
     """A representation of an orbital trajectory at epoch.
 
@@ -13,7 +27,7 @@ class Orbit():
     vector.
 
     """
-    def __init__(self, ecc, sma, inc, raan, argp, tra, sgp=fc.MU_EARTH):
+    def __init__(self, ecc, sma, inc, raan, argp, tra, sgp=fc.MU_EARTH, epoch=0):
         """Initializes a new two-body Keplerian orbit.
 
         Parameters
@@ -32,7 +46,8 @@ class Orbit():
             True Anomaly (theta) at epoch
         sgp : float, optional
             Standard Gravitaional Parameter (mu) (default Earth)
-
+        epoch : float, optional
+            The time for which these orbital elements are valid (default 0)
         """
         self.ecc = ecc
         self.sma = sma
@@ -42,9 +57,92 @@ class Orbit():
         self.tra = tra
         self.sgp = sgp
 
+    # Step 1a from conversion docs: calculate mean motion
     def get_mean_motion(self):
         n = np.sqrt(self.sgp/(self.sma**3))
         return n
+
+    # Step 1b from conversion docs: calculate mean anomaly
+    def get_mean_anomaly(self, t) -> float:
+        """Computes the mean anomaly for time t.
+
+        Parameters
+        ---------
+        t : float
+            The time t since epoch
+
+        Returns
+        --------
+        The mean anomaly for time t.
+        """
+        n = self.get_mean_motion()
+        M = n*(t - self.epoch)
+
+        return M
+
+    # Step 2: calculate eccentric anomaly using Newton's method
+    def get_eccentric_anomaly(self, t):
+        """Computes the eccentric anomaly for time t since epoch.
+        
+        Parameters
+        --------
+        t : float
+            The time t since epoch
+
+        Returns
+        --------
+        The eccentric anomaly for time t.
+        """
+        M = self.get_mean_anomaly(t)
+        args = [self.ecc, M]
+        # Initial guess
+        E0 = M - self.ecc
+        E, n = cm.newtons_single(f_ecc, f_prime_ecc, E0, args=args)
+
+        return E, n
+
+    # Step 3: calculate true anomaly (closed-form)
+    def get_true_anomaly(self, t):
+        """Computes the true anomaly for time t since epoch.
+
+        Parameters
+        --------
+        t : float
+            The time t since epoch
+
+        Returns
+        --------
+        The true anomaly for time t.
+        """
+        E = self.get_eccentric_anomaly(t)
+        nu = 2*atan2(
+            np.sqrt(1 - self.ecc**2) * sin(E),
+            cos(E - self.ecc)
+        )
+
+    # Step 4: compute the orbit radius
+    def get_radius(self, t):
+        nu = self.get_true_anomaly(t)
+        r = (self.sma*(1-(self.ecc**2))) / (1 + self.ecc*cos(nu))
+
+    # Step 5: Calculate specific angular momentum
+    def get_specific_angular_momentum(self):
+        h = np.sqrt(self.sgp*self.sma*(1-(self.ecc**2)))
+
+    # Step 6: calculate position components in Cartesian coordinates
+    def get_orbital_position(self, t):
+        r = self.get_radius(t)
+        nu = self.get_true_anomaly(t)
+
+        x = r*(cos(self.raan)*cos(self.argp + nu) 
+        - sin(self.raan)*sin(self.argp + nu)*cos(self.inc))
+
+        y = r*(sin(self.raan)*cos(self.argp + nu)
+        + cos(self.raan)*sin(self.argp + nu)*cos(self.inc))
+
+        z = r*(sin(self.inc)*sin(self.argp + nu))
+
+        return x, y, z
 
     def get_orbital_period(self):
         T = 2*np.pi*np.sqrt((self.sma**3)/self.sgp)
