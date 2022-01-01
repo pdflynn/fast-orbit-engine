@@ -66,7 +66,7 @@ def sphere_plot(size, clr, dist=0):
     y0 = size * np.outer(np.sin(theta), np.sin(phi))
     z0 = size * np.outer(np.ones(100), np.cos(phi))
 
-    trace = go.Surface(x = x0, y = y0, z = z0, colorscale = [[0,clr], [1,clr]])
+    trace = go.Surface(x = x0, y = y0, z = z0, colorscale = [[0,clr], [1,clr]], opacity=0.5)
     trace.update(showscale=False)
     
     return trace
@@ -132,7 +132,6 @@ def orbit_ode(t, y, mu):
     r = np.array([rx, ry, rz])
 
     # Take the magnitude of r
-
     norm_r = np.linalg.norm(r)
 
     # Define the two-body acceleration
@@ -145,7 +144,7 @@ def orbit_ode(t, y, mu):
 if __name__ == '__main__':
 
     # Set up orbit initial conditions
-    r_mag = r_earth + 5000 # km
+    r_mag = r_earth + 500 # km
     v_mag = np.sqrt(earth_mu / r_mag) # km/sec
 
     # Set up initial position and velocity vectors
