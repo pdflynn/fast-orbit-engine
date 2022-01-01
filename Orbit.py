@@ -72,8 +72,6 @@ class Orbit():
         Vx_ = -(self.sgp/p)**(1/2) * sin(self.tra)
         Vy_ = (self.sgp/p)**(1/2) * (self.ecc + cos(self.tra))
 
-        print(Vx_, Vy_)
-
         # Geocentric-equatorial reference system
         # NOTE: must use \ to continue line in python
         x = (cos(self.raan) * cos(self.argp) - sin(self.raan) * sin(self.argp) * cos(self.inc)) * x_ \
@@ -112,7 +110,7 @@ class Orbit():
         # Default one period with 100 steps per periods
         tspan = Nperiods*self.get_orbital_period()
         dt = tspan/(Nsteps*Nperiods)
-        actual_steps = int(np.ceil(tspan/dt))
+        actual_steps = int(np.ceil(tspan/dt) + 1)
 
         ys = np.zeros((actual_steps, 6)) # State vector initialization
         ts = np.zeros((actual_steps, 1)) # Time vector initialization

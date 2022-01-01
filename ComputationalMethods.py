@@ -1,3 +1,5 @@
+import numpy as np
+
 # From Alfonso Gonzalez: Newton's method of root-solving a
 # single variable function.
 # https://www.youtube.com/watch?v=zNd-sRzA7b8
