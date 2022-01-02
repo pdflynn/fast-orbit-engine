@@ -13,7 +13,7 @@ earth_mu = 3.986004418e14
 # # Main script (propagates orbit)
 if __name__ == '__main__':
 
-    orbit1 = Orbit(0, 8500000, np.deg2rad(15), 0, 0, 0)
+    orbit1 = Orbit(0, 10500000, np.deg2rad(90), 0, 0, 0)
     ys1, ts1 = orbit1.propagate()
     rs1 = ys1[:, :3]
 

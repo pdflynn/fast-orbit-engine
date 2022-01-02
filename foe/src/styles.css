@@ -1,4 +1,5 @@
 @import "https://fonts.googleapis.com/css?family=Open+Sans";
+@import "https://fonts.googleapis.com/css2?family=Biryani:wght@200&display=swap";
 
 * {
   -webkit-box-sizing: border-box;
@@ -27,6 +28,14 @@ body {
   font-size: 16px;
   background-color: #222;
   color: #aaa;
+  overflow: hidden;
+}
+
+.math {
+  font-family: "Biryani";
+  font-size: 14px;
+  margin: 0px;
+  padding: 0px;
 }
 
 .simple-container {
@@ -54,7 +63,9 @@ body {
 }
 
 p {
-  font-size: 16px;
+  font-size: 14px;
+  margin: 1px;
+  padding: 0px;
 }
 
 h1 {
@@ -69,11 +80,9 @@ h2 {
 
 h3 {
   font-size: 16px;
-  line-height: 27px;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #d8d8d8;
-  border-top: 1px solid #d8d8d8;
+  line-height: 16px;
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
 
 hr {
@@ -101,13 +110,35 @@ li {
 }
 
 .view-pane {
-  width: 60%;
-  height: 60%;
+  width: 80%;
+  height: 95%;
   background-color: #16161b;
   position: absolute;
-  top: 30%;
+  top: 5%;
   left: 20%;
   border-style: solid;
-  border-color: #222;
+  border-color: #7b7d80;
+  border-width: 1px;
+}
+
+.control-pane {
+  width: 20%;
+  height: 95%;
+  background-color: #222;
+  position: absolute;
+  top: 5%;
+  left: 1px;
+  border-style: solid;
+  border-color: #7b7d80;
+  border-width: 1px;
+}
+
+.orbit {
+  background: #16161b;
+  margin: 2%;
+  padding: 2%;
+  cursor: pointer;
+  border-style: solid;
+  border-color: #7b7d80;
   border-width: 1px;
 }

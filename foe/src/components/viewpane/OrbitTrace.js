@@ -1,16 +1,27 @@
 import * as THREE from 'three'
 
+// OrbitTrace
+// Draws a continuous line for an array of x, y, and z points
+// Notes:
+//      -Input points in traditional (not WebGL) nomenclature. Z is up.
 const OrbitTrace = ({xs, ys, zs}) => {
+    // Merges x,y,z point lists into an array of Float32Arrays which can
+    // be iterated through to produce THREE Vector3 objects
+    const vertices = xs.map((item, i) => {return Float32Array.from([item, zs[i], ys[i]])})
 
-    const vertices_alt = xs.map((item, i) => {return Float32Array.from([item, zs[i], ys[i]])})
-
+    // Turn coordinates into Vector3 objects
     const points = [];
-    for (var i=0; i<vertices_alt.length;i++) {
-        points.push(new THREE.Vector3(vertices_alt[i][0], vertices_alt[i][1], vertices_alt[i][2]))
+    for (var i=0; i<vertices.length;i++) {
+        points.push(new THREE.Vector3(vertices[i][0], vertices[i][1], vertices[i][2]))
     }
-    console.log(points)
+    // For debugging
+    // console.log(points)
+
+    // Creates a BufferGeometry object from the Vector3 objects
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
 
+    // Use declarative (react-three-fiber) statements to return
+    // a group of lines centered at the origin
     return (
         <group position={[0, 0, 0]}>
             <line geometry={lineGeometry}>
