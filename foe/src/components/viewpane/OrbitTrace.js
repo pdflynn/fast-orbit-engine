@@ -12,23 +12,6 @@ const OrbitTrace = ({xs, ys, zs}) => {
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
 
     return (
-        // <mesh position={[0,0,0]}>
-        //     <bufferGeometry attach="geometry"
-        //     vertices={vertices_alt.map(v => new THREE.Vector3(...v))}/>
-        //     <meshNormalMaterial wireframe attach="material" color="pink" />
-        // </mesh>
-
-        // <mesh position={[0,0,0]}>
-        //     <bufferGeometry attach="geometry">
-        //         <bufferAttribute attach="position">
-        //             array={vertices}
-        //             itemSize={3}
-        //             numVertices={vertices.length}
-        //             count={vertices.length / 3}
-        //         </bufferAttribute>
-        //     </bufferGeometry>
-        //     <meshNormalMaterial attach="material" color="pink" />
-        // </mesh>
         <group position={[0, 0, 0]}>
             <line geometry={lineGeometry}>
                 <lineBasicMaterial attach="material" color={'white'} 
