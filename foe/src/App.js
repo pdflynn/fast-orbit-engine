@@ -5,9 +5,11 @@ import "./styles.css";
 import Sphere from "./components/viewpane/Sphere";
 import OrbitTrace from "./components/viewpane/OrbitTrace";
 import Orbits from "./components/control-pane/Orbits";
+import OrbitAnimation from "./components/viewpane/OrbitAnimation";
 
 // dummy data. TODO: pull planetary radii from FOE backend API
 const R_EARTH = 6.371;
+const MINUTES_PER_SECOND = 10;
 
 function App() {
 
@@ -68,6 +70,10 @@ function App() {
           <Stars radius={200} depth={60} count={1000} factor={3} saturation={0.2}/>
           <ambientLight intensity={0.8} />
           <Sphere radius={R_EARTH} />
+          <spotLight position={[150, 0, 0]} intensity={3}/>
+
+          <OrbitAnimation xs={x} ys={y} zs={z} color={'navyblue'}/>
+          <OrbitAnimation xs={x2} ys={y2} zs={z2} color={'white'}/>
         </Canvas>
       </div>
     </>

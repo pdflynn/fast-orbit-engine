@@ -22,6 +22,11 @@ if __name__ == '__main__':
         y = rs1[:, 1] / 1e6
         z = rs1[:, 2] / 1e6
 
+        f.write("const t = [")
+        for i in range(0, len(ts1)-1):
+            f.write(str(ts1[i]) + ', ')
+        f.write(str(ts1[len(ts1)-1]) + '];\n')
+
         f.write("const x = [")
         for i in range(0, len(x)-1):
             f.write(str(x[i]) + ', ')

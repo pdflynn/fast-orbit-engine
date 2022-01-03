@@ -7,7 +7,7 @@ const Orbit = ({orbit, onDelete}) => {
             <h3>
                 {orbit.text}
                 <FaTimes onClick={() => onDelete(orbit.id)}
-                style={{color: 'darkred', cursor: 'pointer',
+                style={{color: 'white', cursor: 'pointer',
                 float: 'right'}}/>
             </h3>
             <p className='math'>a = {orbit.semiMajorAxis} (km)</p>
