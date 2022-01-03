@@ -8,6 +8,6 @@ Celestial bodies are assumed to be perfect spheres.
 
 Might merge this into SLAM if I ever finish it / work more on the other project.
 
-Current UI look:
+User Interface Prototype:
 
-![FOE Interface] ( ui.png)
+![FOEInterface](https://raw.githubusercontent.com/pdflynn/fast-orbit-engine/main/ui.png)
