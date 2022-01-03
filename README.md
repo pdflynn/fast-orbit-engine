@@ -10,4 +10,4 @@ Might merge this into SLAM if I ever finish it / work more on the other project.
 
 Current UI look:
 
-![] (ui.png)
+![] ( ui.png)
