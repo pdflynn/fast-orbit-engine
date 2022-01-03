@@ -5,7 +5,9 @@ import foe_constants as fc
 import ComputationalMethods as cm
 from math import cos, sin
 
-### Orbit Class
+# Orbit Class
+
+
 class Orbit():
     """A representation of an orbital trajectory at epoch.
 
@@ -17,6 +19,7 @@ class Orbit():
     vector.
 
     """
+
     def __init__(self, ecc, sma, inc, raan, argp, tra, sgp=fc.MU_EARTH, epoch=0):
         """Initializes a new two-body Keplerian orbit.
 
@@ -50,7 +53,7 @@ class Orbit():
 
     def get_cartesian(self):
         """Returns the Cartesian state vector in geocentric-equatorial reference.
-        
+
         Description
         --------
         get_cartesian() returns the Cartesian state vector in the geocentric-equatorial
@@ -75,16 +78,22 @@ class Orbit():
         # Geocentric-equatorial reference system
         # NOTE: must use \ to continue line in python
         x = (cos(self.raan) * cos(self.argp) - sin(self.raan) * sin(self.argp) * cos(self.inc)) * x_ \
-        + (-cos(self.raan) * sin(self.argp) - sin(self.raan) * cos(self.argp) * cos(self.inc)) * y_
+            + (-cos(self.raan) * sin(self.argp) - sin(self.raan)
+               * cos(self.argp) * cos(self.inc)) * y_
         y = (sin(self.raan) * cos(self.argp) + cos(self.raan) * sin(self.argp) * cos(self.inc)) * x_ \
-        + (-sin(self.raan) * sin(self.argp) + cos(self.raan) * cos(self.argp) * cos(self.inc)) * y_
-        z = (sin(self.argp) * sin(self.inc)) * x_ + (cos(self.argp) * sin(self.inc)) * y_
+            + (-sin(self.raan) * sin(self.argp) + cos(self.raan)
+               * cos(self.argp) * cos(self.inc)) * y_
+        z = (sin(self.argp) * sin(self.inc)) * x_ + \
+            (cos(self.argp) * sin(self.inc)) * y_
 
         Vx = (cos(self.raan) * cos(self.argp) - sin(self.raan) * sin(self.argp) * cos(self.inc)) * Vx_ \
-        + (-cos(self.raan) * sin(self.argp) - sin(self.raan) * cos(self.argp) * cos(self.inc)) * Vy_
+            + (-cos(self.raan) * sin(self.argp) - sin(self.raan)
+               * cos(self.argp) * cos(self.inc)) * Vy_
         Vy = (sin(self.raan) * cos(self.argp) + cos(self.raan) * sin(self.argp) * cos(self.inc)) * Vx_ \
-        + (-sin(self.raan) * sin(self.argp) + cos(self.raan) * cos(self.argp) * cos(self.inc)) * Vy_
-        Vz = (sin(self.argp) * sin(self.inc)) * Vx_ + (cos(self.argp) * sin(self.inc)) * Vy_
+            + (-sin(self.raan) * sin(self.argp) + cos(self.raan)
+               * cos(self.argp) * cos(self.inc)) * Vy_
+        Vz = (sin(self.argp) * sin(self.inc)) * Vx_ + \
+            (cos(self.argp) * sin(self.inc)) * Vy_
 
         return x, y, z, Vx, Vy, Vz
 
@@ -93,8 +102,8 @@ class Orbit():
         """
         T = 2*np.pi*np.sqrt((self.sma**3)/self.sgp)
         return T
-        
-    def propagate(self, Nperiods=1, Nsteps=100, integrator='lsoda'):
+
+    def propagate(self, Nperiods=1, dt=60, integrator='lsoda'):
         """Propagates the orbit, returning a Cartesian state vector and time.
 
         Parameters
@@ -109,19 +118,18 @@ class Orbit():
         """
         # Default one period with 100 steps per periods
         tspan = Nperiods*self.get_orbital_period()
-        dt = tspan/(Nsteps*Nperiods)
         actual_steps = int(np.ceil(tspan/dt) + 1)
 
-        ys = np.zeros((actual_steps, 6)) # State vector initialization
-        ts = np.zeros((actual_steps, 1)) # Time vector initialization
+        ys = np.zeros((actual_steps, 6))  # State vector initialization
+        ts = np.zeros((actual_steps, 1))  # Time vector initialization
 
         # Initial conditions
         x0, y0, z0, vx0, vy0, vz0 = self.get_cartesian()
         r0 = [x0, y0, z0]
         v0 = [vx0, vy0, vz0]
 
-        y0 = r0 + v0 # Concatenate lists
-        ys[0] = np.array(y0) # Convert to Numpy array
+        y0 = r0 + v0  # Concatenate lists
+        ys[0] = np.array(y0)  # Convert to Numpy array
 
         # Solve using scipy integration
         step = 1
@@ -135,12 +143,5 @@ class Orbit():
             ts[step] = solver.t
             ys[step] = solver.y
             step += 1
-        
+
         return ys, ts
-
-
-
-
-        
-
-    
