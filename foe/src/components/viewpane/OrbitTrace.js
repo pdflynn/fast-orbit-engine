@@ -4,7 +4,7 @@ import * as THREE from 'three'
 // Draws a continuous line for an array of x, y, and z points
 // Notes:
 //      -Input points in traditional (not WebGL) nomenclature. Z is up.
-const OrbitTrace = ({xs, ys, zs}) => {
+const OrbitTrace = ({xs, ys, zs, color}) => {
     // Merges x,y,z point lists into an array of Float32Arrays which can
     // be iterated through to produce THREE Vector3 objects
     const vertices = xs.map((item, i) => {return Float32Array.from([item, zs[i], ys[i]])})
@@ -25,8 +25,9 @@ const OrbitTrace = ({xs, ys, zs}) => {
     return (
         <group position={[0, 0, 0]}>
             <line geometry={lineGeometry}>
-                <lineBasicMaterial attach="material" color={'white'} 
-                linewidth={10} linecap={'round'} linejoin={'round'} />
+                <lineBasicMaterial attach="material" color={color} 
+                linewidth={10} linecap={'round'} linejoin={'round'} 
+                dashsize={10} gapsize={10}/>
             </line>
         </group>
         
