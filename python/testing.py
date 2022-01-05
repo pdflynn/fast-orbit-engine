@@ -13,8 +13,8 @@ earth_mu = 3.986004418e14
 # # Main script (propagates orbit)
 if __name__ == '__main__':
 
-    orbit1 = Orbit(0, 42164000, np.deg2rad(0), np.deg2rad(0), 0, 0)
-    ys1, ts1 = orbit1.propagate(dt=40)
+    orbit1 = Orbit(0, 8413000, np.deg2rad(0), np.deg2rad(0), 0, 0)
+    ys1, ts1 = orbit1.propagate(dt=60)
     rs1 = ys1[:, :3]
 
     with open('output.txt', 'w') as f:

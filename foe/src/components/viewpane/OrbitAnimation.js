@@ -19,6 +19,7 @@ const OrbitAnimation = ({ts, xs, ys, zs, color}) => {
     // Occurs every frame
     useFrame(() => {
         globalTime = getGlobalTime();
+        // console.log(globalTime);
         var timeInOrbit = globalTime - (numOrbits * orbitalPeriod);
         currentIndx = Math.floor(timeInOrbit / dt);
 
@@ -31,7 +32,7 @@ const OrbitAnimation = ({ts, xs, ys, zs, color}) => {
             // Handle wrapping around back to the beginning of array
             if (currentIndx>=ts.length) {
                 numOrbits++;
-                console.log(numOrbits); // for debug: log orbit ticker
+                // console.log(numOrbits); // for debug: log orbit ticker
                 nextTime = ts[0]; // reset time to 0
                 myMesh.current.position.x = xs[0];
                 myMesh.current.position.y = zs[0];

@@ -110,19 +110,19 @@ li {
 }
 
 .view-pane {
-  width: 80%;
+  width: 85%;
   height: 95%;
   background-color: #16161b;
   position: absolute;
   top: 5%;
-  left: 20%;
+  left: 15%;
   border-style: solid;
   border-color: #7b7d80;
   border-width: 1px;
 }
 
 .control-pane {
-  width: 20%;
+  width: 15%;
   height: 95%;
   background-color: #222;
   position: absolute;

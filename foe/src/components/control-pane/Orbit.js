@@ -1,9 +1,9 @@
 import React from 'react'
 import { FaTimes } from 'react-icons/fa'
 
-const Orbit = ({orbit, onDelete}) => {
+const Orbit = ({orbit, onDelete, onToggle}) => {
     return (
-        <div className='orbit'>
+        <div className='orbit' onClick={(onToggle)}>
             <h3>
                 {orbit.text}
                 <FaTimes onClick={() => onDelete(orbit.id)}
