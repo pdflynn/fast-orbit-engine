@@ -142,3 +142,10 @@ li {
   border-color: #7b7d80;
   border-width: 1px;
 }
+
+.centered-child {
+  position: relative;
+  top: auto;
+  left: 5%;
+  width: 100%;
+}
