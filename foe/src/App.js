@@ -9,7 +9,7 @@ import OrbitAnimation from "./components/viewpane/OrbitAnimation";
 
 // dummy data. TODO: pull planetary radii from FOE backend API
 const R_EARTH = 6.371;
-const TIME_CONST = 500; // How many times faster than realtime
+const TIME_CONST = 1000; // How many times faster than realtime
 const MINUTES_PER_SECOND = 10;
 const t_start = (new Date().getTime() / 1000) * TIME_CONST;
 
@@ -83,14 +83,14 @@ function App() {
 
       <div className='view-pane'>
         <Canvas >
-          <OrbitTrace xs={x} ys={y} zs={z} color={'grey'}/>
-          <OrbitTrace xs={x2} ys={y2} zs={z2} color={'teal'}/>
           <OrbitControls minDistance={10} maxDistance={75} enablePan={false}/>
           <Stars radius={200} depth={60} count={1000} factor={3} saturation={0.2}/>
           <ambientLight intensity={0.8} />
           <Sphere radius={R_EARTH} />
           <spotLight position={[150, 0, 0]} intensity={1}/>
 
+          <OrbitTrace xs={x} ys={y} zs={z} color={'grey'}/>
+          <OrbitTrace xs={x2} ys={y2} zs={z2} color={'teal'}/>
           <OrbitAnimation ts={t} xs={x} ys={y} zs={z} color={'grey'}/>
           <OrbitAnimation ts={t2} xs={x2} ys={y2} zs={z2} color={'teal'}/>
         </Canvas>

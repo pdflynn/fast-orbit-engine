@@ -12,46 +12,31 @@ const OrbitAnimation = ({ts, xs, ys, zs, color}) => {
     var numOrbits = 0;
     
     // Initialize counting variables
-    var i = 0;
     var nextTime = ts[0];
+    const dt = ts[1] - ts[0];
+    var currentIndx = 0;
     
-
-
     // Occurs every frame
-    // Problem: this assumes an infinite framerate.
-    // What we want to do on the frame update is:
-    // On frame update:
-    //      Map timeInOrbit to a ts value and get the index
-    //      Set x, y, z, to their values at that index
-    //      This way we won't run into a framerate bottleneck
-    //      and can run the simulation very fast which might be
-    //      helpful for long orbits.
-    // The difficult part will be efficiently mapping timeInOrbit
-    // to a ts value and finding the index.
-    // Take a look at findIndex() and indexOf()
-    // wait: if I know dt (which I should, pass it into orbitAnimation)
-    //      then shouldn't I be able to mathematically calculate the
-    //      index and do it in O(1)?
     useFrame(() => {
         globalTime = getGlobalTime();
         var timeInOrbit = globalTime - (numOrbits * orbitalPeriod);
+        currentIndx = Math.floor(timeInOrbit / dt);
 
         // Only update if we've passed the appropriate time
         if (timeInOrbit >= nextTime) {
-            myMesh.current.position.x = xs[i+1];
-            myMesh.current.position.y = zs[i+1];
-            myMesh.current.position.z = ys[i+1];
-            nextTime = ts[i+1]
-            i++;
+            myMesh.current.position.x = xs[currentIndx];
+            myMesh.current.position.y = zs[currentIndx];
+            myMesh.current.position.z = ys[currentIndx];
+            nextTime = ts[currentIndx]
             // Handle wrapping around back to the beginning of array
-            if (i==ts.length) {
+            if (currentIndx>=ts.length) {
                 numOrbits++;
-                console.log(numOrbits);
-                nextTime = ts[0];
+                console.log(numOrbits); // for debug: log orbit ticker
+                nextTime = ts[0]; // reset time to 0
                 myMesh.current.position.x = xs[0];
                 myMesh.current.position.y = zs[0];
                 myMesh.current.position.z = ys[0];
-                i=0;
+                currentIndx = 0; // reset index to 0
             }
 
         }
