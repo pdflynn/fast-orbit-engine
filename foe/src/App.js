@@ -7,6 +7,8 @@ import OrbitTrace from "./components/viewpane/OrbitTrace";
 import Orbits from "./components/control-pane/Orbits";
 import OrbitAnimation from "./components/viewpane/OrbitAnimation";
 import SimulationTime from "./components/control-pane/SimulationTime";
+import AddOrbit from "./components/control-pane/AddOrbit";
+import ShowAddOrbit from "./components/control-pane/ShowAddOrbit";
 
 // dummy data. TODO: pull planetary radii from FOE backend API
 const R_EARTH = 6.371;
@@ -14,6 +16,7 @@ var TIME_CONST = 1000; // hundreds of seconds per second of simulation time
 
 // Time variable increases by 10 every 10 ms.
 var time = 0;
+var nextOrbitKey = 2;
 time = setInterval(() => {time += (TIME_CONST / 100)}, 10);
 
 
@@ -24,6 +27,8 @@ time = setInterval(() => {time += (TIME_CONST / 100)}, 10);
 
 function App() {
 
+  const [showAddOrbit, setShowAddOrbit] = useState(false);
+
   const updateTimeConstant = (simTimeMult) => {
     TIME_CONST = parseFloat(simTimeMult.simTimeMult);
   }
@@ -33,27 +38,39 @@ function App() {
   // Temporary hard-coded orbital parameters
   const [orbits, setOrbits] = useState([
     {
-      id: 1,
-      text: 'Circular, Zero-Inclination Orbit',
-      semiMajorAxis: 8500,
-      eccentricity: 0,
-      inclination: 0,
-      rightAscension: 0,
-      argPeriapse: 0,
+      id: 0,
+      text: 'Circular, Equatorial Orbit',
+      sma: 8500,
+      ecc: 0,
+      inc: 0,
+      raan: 0,
+      argp: 0,
       trueAnomaly: 0,
     },
     {
-      id: 2,
+      id: 1,
       text: 'Elliptical, Polar Orbit',
-      semiMajorAxis: 10000,
-      eccentricity: 0.5,
-      inclination: 90,
-      rightAscension: 0,
-      argPeriapse: 0,
+      sma: 10000,
+      ecc: 90,
+      inc: 0,
+      raan: 0,
+      argp: 0,
       trueAnomaly: 0,
     }
   ])
 
+  // Add orbit
+  const addOrbit = (orbit) => {
+    nextOrbitKey++;
+    const id = nextOrbitKey;
+    const newOrbit = {id, ...orbit};
+    console.log(id);
+    console.log(newOrbit);
+    setOrbits([...orbits, newOrbit]);
+    setShowAddOrbit(!showAddOrbit)
+  }
+
+  // Delete orbit
   const deleteOrbit = (id) => {
     setOrbits(orbits.filter((orbit) => orbit.id !== id))
   }
@@ -82,9 +99,14 @@ function App() {
     {/* TODO: give this its own header */}
       <h2 style={{position: 'absolute', right: '1%'}}>FOE: Fast Orbit Engine</h2>
 
+      {showAddOrbit && <AddOrbit onAdd={addOrbit} onClose={() => setShowAddOrbit(!showAddOrbit)}/>}
+
       <div className='control-pane'>
           <SimulationTime updateTime = {updateTimeConstant}/>
-          {orbits.length > 0 ? <Orbits orbits={orbits}/> : 'Add an orbit.'}
+          <ShowAddOrbit title='Add Orbit' onAdd={() => setShowAddOrbit(!showAddOrbit)} showAdd={showAddOrbit}/>
+
+
+          {orbits.length > 0 ? <Orbits orbits={orbits} onDelete={deleteOrbit}/> : 'Add an orbit.'}
       </div>
 
       <div className='view-pane'>

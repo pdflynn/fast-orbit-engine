@@ -10,12 +10,12 @@ const Orbit = ({orbit, onDelete, onToggle}) => {
                 style={{color: 'white', cursor: 'pointer',
                 float: 'right'}}/>
             </h3>
-            <p className='math'>a = {orbit.semiMajorAxis} (km)</p>
-            <p className='math'>e = {orbit.eccentricity}</p>
-            <p className='math'>i = {orbit.inclination} (deg)</p>
-            <p className='math'>&Omega; = {orbit.rightAscension} (deg)</p>
-            <p className='math'>&omega; = {orbit.argPeriapse} (deg)</p>
-            <p className='math'>&theta; = {orbit.trueAnomaly} (deg)</p>
+            <p className='math'>a = {orbit.sma} (km)</p>
+            <p className='math'>e = {orbit.ecc}</p>
+            <p className='math'>i = {orbit.inc} (deg)</p>
+            <p className='math'>&Omega; = {orbit.raan} (deg)</p>
+            <p className='math'>&omega; = {orbit.argp} (deg)</p>
+            <p className='math'>&theta; = {orbit.tra} (deg)</p>
         </div>
     )
 }
