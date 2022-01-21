@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from Orbit import *
 
 
@@ -16,12 +16,17 @@ def home():
 # back-end and then extract the propagated orbit
 @app.route('/new_orbit', methods=['GET', 'POST'])
 def new_orbit():
-    return {
-        't': [1, 2, 3, 4],
-        'x': [0, 0, 0, 0],
-        'y': [0, 0, 0, 0],
-        'z': [0, 0, 0, 0],
-    }
+    return jsonify(
+        [{
+            'id': 0,
+            'text': 'Fetch from back end',
+            'sma': 8500,
+            'ecc': 0,
+            'inc': 0,
+            'raan': 0,
+            'argp': 0,
+            'trueAnomaly': 0,
+        }])
 
 
 # Start the Flask server

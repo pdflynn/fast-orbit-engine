@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import "./styles.css";
@@ -58,6 +58,15 @@ function App() {
       trueAnomaly: 0,
     }
   ])
+
+  // backend fetch test: should set the orbits to something
+  // from the back end
+  useEffect(() => {
+    fetch('/new_orbit').then(
+      response => response.json()
+    ).then(data => setOrbits(data))
+  }, []); // second parameter [] ensures this only runs once
+  // you could put variables inside of [], then it will re-run when those change (?)
 
   // Add orbit
   const addOrbit = (orbit) => {
