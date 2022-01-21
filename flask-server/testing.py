@@ -12,8 +12,9 @@ earth_mu = 3.986004418e14
 # # Main script (propagates orbit)
 if __name__ == '__main__':
 
-    orbit1 = Orbit(0.75, 54130000, np.deg2rad(0), np.deg2rad(0), 0, 0)
-    ys1, ts1 = orbit1.propagate(dt=30)
+    orbit1 = Orbit(10000000, 0, np.deg2rad(
+        15), np.deg2rad(0), 0, 0)
+    ys1, ts1 = orbit1.propagate(dt=30, integrator='lsoda')
     rs1 = ys1[:, :3]
 
     with open('output.txt', 'w') as f:
@@ -23,7 +24,7 @@ if __name__ == '__main__':
 
         f.write("const t = [")
         for i in range(0, len(ts1)-1):
-            f.write(str(ts1[i][0]) + ', ')
+            f.write(str(ts1[i]) + ', ')
         f.write(str(ts1[len(ts1)-1]) + '];\n')
 
         f.write("const x = [")

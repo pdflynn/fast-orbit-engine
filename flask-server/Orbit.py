@@ -7,6 +7,8 @@ from math import cos, sin
 
 # Orbit Class
 
+# TODO: failing to converge in a lot of cases (I don't notice a trend yet). Investigate
+
 
 class Orbit():
     """A representation of an orbital trajectory at epoch.
@@ -20,15 +22,15 @@ class Orbit():
 
     """
 
-    def __init__(self, ecc, sma, inc, raan, argp, tra, sgp=fc.MU_EARTH, epoch=0):
+    def __init__(self, sma, ecc, inc, raan, argp, tra, sgp=fc.MU_EARTH, epoch=0):
         """Initializes a new two-body Keplerian orbit.
 
         Parameters
         ---------
-        ecc : float
-            Eccentricity (e)
         sma : float
             Semi-major axis (a)
+        ecc : float
+            Eccentricity (e)
         inc : float
             Inclination (i)
         raan : float 
@@ -143,5 +145,6 @@ class Orbit():
             ts[step] = solver.t
             ys[step] = solver.y
             step += 1
+        ts = ts[:, 0]  # needed to avoid array of 1-element arrays
 
         return ys, ts
