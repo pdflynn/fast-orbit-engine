@@ -21,17 +21,18 @@ def new_orbit():
         data = request.json  # contains key-values for the new orbit
 
         # propagate the orbit using Orbit.py
-        # TODO: casting is probably lazy, make form give numbers?
+        # converts to m for sma and deg for other elements
         new_orbit = Orbit(
-            float(data.get('sma')),
+            float(data.get('sma'))*1e3,
             float(data.get('ecc')),
-            float(data.get('inc')),
-            float(data.get('raan')),
-            float(data.get('argp')),
-            float(data.get('tra'))
+            np.deg2rad(float(data.get('inc'))),
+            np.deg2rad(float(data.get('raan'))),
+            np.deg2rad(float(data.get('argp'))),
+            np.deg2rad(float(data.get('tra')))
         )
         ys, ts = new_orbit.propagate(dt=30)
         rs = ys[:, :3]
+        # divide by 1 million for coordinates of simulation (vs actual coords)
         x = rs[:, 0] / 1e6
         y = rs[:, 1] / 1e6
         z = rs[:, 2] / 1e6

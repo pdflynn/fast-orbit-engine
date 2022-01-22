@@ -41,7 +41,7 @@ function App() {
     {
       id: 0,
       text: 'Example Orbit',
-      sma: 10000000,
+      sma: 10000,
       ecc: 0,
       inc: 15,
       raan: 0,
