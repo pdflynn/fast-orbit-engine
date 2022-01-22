@@ -97,7 +97,8 @@ function App() {
 
   // Delete orbit
   const deleteOrbit = (id) => {
-    setOrbits(orbits.filter((orbit) => orbit.id !== id))
+    setOrbits(orbits.filter((orbit) => orbit.id !== id));
+    setOrbitVisualizations(orbitVisualizations.filter((orbitVisualization) => orbitVisualization.id !== id));
   }
 
 
