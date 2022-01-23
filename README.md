@@ -31,7 +31,7 @@ This list is intended to capture my intent for FOE in its near-future developmen
 - Celestial body selection. We are interested in simulating orbits not just around the Earth, but also around the Moon, Mars, the Sun, Venus, etc.
 - Conversion between apoapsis/periapsis and semimajor axis. I think that describing an orbit using the former terms is more intuitive than describing it with the semimajor axis. Input should be allowed either way.
 - Spacecraft attitude. A basic description of where each satellite is pointing should be stored in each orbit. We should also allow for the orbiting body to "track" in many ways, either by remaining fixed (no attitude control) or continuously pointing at some fixed point or directly down at the celestial body.
-- Field of view calculation and visualization. Since celestial bodies are assumed to be perfectly spherical in this engine, the calculation of a satellite's field-of-view should be relativley trivial. We would also like to visualize this on the celestial body.
+- Field of view calculation and visualization. Since celestial bodies are assumed to be perfectly spherical in this engine, the calculation of a satellite's field-of-view should be relatively trivial. We would also like to visualize this on the celestial body.
 
 # Known Bugs
 
@@ -42,4 +42,4 @@ This list is intended to capture my intent for FOE in its near-future developmen
 
 TODO: write this section.
 
-FOE isn't really in a state yet where the user will be happy with using it. However, if you do want to install you should just be able to clone the repo, launch the Flask server in `flask-server` with the included Python `venv` and then run the react server in `foe`. Then, just go to `localhost:3000` in your browser.
+FOE isn't really in a state yet where the user will be happy with using it. However, if you do want to install you should just be able to clone the repo, launch the Flask server in `flask-server` after installing the libraries in `requirements.txt` and then run the react server in `foe`. Then, just go to `localhost:3000` in your browser.
