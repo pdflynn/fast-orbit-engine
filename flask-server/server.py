@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from Orbit import *
 import numpy as np
+import foe_constants as fc
 
 
 # Create Flask app
@@ -45,6 +46,23 @@ def new_orbit():
             'y': y.tolist(),
             'z': z.tolist(),
         })
+
+
+@app.route('/get_gravitational_parameter', methods=['POST', 'GET'])
+def get_sgp():
+    if request.method == 'POST':
+        data = request.json
+        requested_sgp = data.get('mu').lower()
+        try:
+            sgp = fc.MU_DICT[requested_sgp]
+        except:
+            sgp = 'NOT_FOUND'
+
+        return jsonify(
+            {
+                'mu': sgp
+            }
+        )
 
 
 # Start the Flask server
