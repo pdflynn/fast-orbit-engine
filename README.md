@@ -37,6 +37,7 @@ This list is intended to capture my intent for FOE in its near-future developmen
 
 - Some orbits fail to propagate, yielding a divide-by-zero error or similar (TODO: reproduce a known erroring orbit).
 - Upon cancelling the "add orbit" window by double clicking the screen, all orbits disappear for a split second and then reappear
+- Very poor performance on lower-end machines (laptop). The graphical performance (framerate) is acceptable but the orbits lag
 
 # Installation
 
