@@ -25,7 +25,7 @@ The FOE interface is split into three distinct areas:
 This list is intended to capture my intent for FOE in its near-future development. I have a ton of ideas so this is by no means an exhaustive list. My real intent with this application is to build a basis for a future satellite communication simulator, so once these features are in the empasis will be less on the "GNC" features and more on the communications features. I am also extremely busy with my senior year of undergrad so no promises on development time.
 
 - Color-coding individual orbits according to color palette input.
-- Revamping the look of each orbit in the control pane (currently each orbit looks to large imo, on a 1080p screen you can only fit ~4).
+- ~~Revamping the look of each orbit in the control pane (currently each orbit looks to large imo, on a 1080p screen you can only fit ~4).~~ **Done 02/23/2022**. Added a scrollbar. They are still too big imo but this is a lower priority now.
 - Mass orbital insertion. Say you want to populate one orbital plane with 35 satellites separated by 10 degrees each. You should be able to do this with a wizard/few clicks instead of having to manually input 35 satellites.
 - Prettier Earth. Earth is represented as a green sphere using R3F. This could be textured for a nicer look.
 - Celestial body selection. We are interested in simulating orbits not just around the Earth, but also around the Moon, Mars, the Sun, Venus, etc.
@@ -43,3 +43,7 @@ This list is intended to capture my intent for FOE in its near-future developmen
 TODO: write this section.
 
 FOE isn't really in a state yet where the user will be happy with using it. However, if you do want to install you should just be able to clone the repo, launch the Flask server in `flask-server` after installing the libraries in `requirements.txt` and then run the react server in `foe`. Then, just go to `localhost:3000` in your browser.
+
+# Credits
+
+- Thank you to www.solarsystemscope.com for the planet textures. https://www.solarsystemscope.com/textures/

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import "./styles.css";
 import Sphere from "./components/viewpane/Sphere";
+import Planet from "./components/viewpane/Planet";
 import OrbitTrace from "./components/viewpane/OrbitTrace";
 import Orbits from "./components/control-pane/Orbits";
 import OrbitAnimation from "./components/viewpane/OrbitAnimation";
@@ -97,33 +98,34 @@ function App() {
 
   return (
     <>
-    {/* TODO: give this its own header */}
-      <h2 style={{position: 'absolute', right: '1%'}}>FOE: Fast Orbit Engine</h2>
+      <Suspense fallback={<div>Loading... </div>}>
+        <h2 style={{position: 'absolute', right: '1%'}}>FOE: Fast Orbit Engine</h2>
+        {showAddOrbit && <AddOrbit onAdd={addOrbit} onClose={() => setShowAddOrbit(!showAddOrbit)}/>}
 
-      {showAddOrbit && <AddOrbit onAdd={addOrbit} onClose={() => setShowAddOrbit(!showAddOrbit)}/>}
+        <div className='control-pane'>
+            <SimulationTime updateTime = {updateTimeConstant}/>
+            <ShowAddOrbit title='Add Orbit' onAdd={() => setShowAddOrbit(!showAddOrbit)} showAdd={showAddOrbit}/>
+            <ShowStars title='Show Stars' onClick={() => setShowStars(!showStars)} showStars={showStars}/>
+            {orbits.length > 0 ? <Orbits orbits={orbits} onDelete={deleteOrbit}/> : 'Add an orbit.'}
+        </div>
 
-      <div className='control-pane'>
-          <SimulationTime updateTime = {updateTimeConstant}/>
-          <ShowAddOrbit title='Add Orbit' onAdd={() => setShowAddOrbit(!showAddOrbit)} showAdd={showAddOrbit}/>
-          <ShowStars title='Show Stars' onClick={() => setShowStars(!showStars)} showStars={showStars}/>
-          {orbits.length > 0 ? <Orbits orbits={orbits} onDelete={deleteOrbit}/> : 'Add an orbit.'}
-      </div>
+        <div className='view-pane'>
+          <Canvas gl={{antialias: true}}>
+            <color attach="background" args={["black"]} />
+            <OrbitControls minDistance={10} maxDistance={75} enablePan={false}/>
 
-      <div className='view-pane'>
-        <Canvas gl={{antialias: true}}>
-          <color attach="background" args={["black"]} />
-          <OrbitControls minDistance={10} maxDistance={75} enablePan={false}/>
+            {showStars ? <Stars radius={150} depth={80} count={2000} factor={3} saturation={0.4}/> : ''}
 
-          {showStars ? <Stars radius={150} depth={80} count={2000} factor={3} saturation={0.4}/> : ''}
+            <ambientLight intensity={0.8} />
+            {/* <Sphere radius={R_EARTH} /> */}
+            <Planet radius={R_EARTH} />
+            <spotLight position={[150, 0, 0]} intensity={1}/>
 
-          <ambientLight intensity={0.8} />
-          <Sphere radius={R_EARTH} />
-          <spotLight position={[150, 0, 0]} intensity={1}/>
+            {orbitVisualizations.length > 0 ? <OrbitVisualizations orbitTraces={orbitVisualizations}/> : ''}
 
-          {orbitVisualizations.length > 0 ? <OrbitVisualizations orbitTraces={orbitVisualizations}/> : ''}
-
-        </Canvas>
-      </div>
+          </Canvas>
+        </div>
+      </Suspense>
     </>
   );
 }
