@@ -27,7 +27,7 @@ This list is intended to capture my intent for FOE in its near-future developmen
 - Color-coding individual orbits according to color palette input.
 - ~~Revamping the look of each orbit in the control pane (currently each orbit looks to large imo, on a 1080p screen you can only fit ~4).~~ **Done 02/23/2022**. Added a scrollbar. They are still too big imo but this is a lower priority now.
 - Mass orbital insertion. Say you want to populate one orbital plane with 35 satellites separated by 10 degrees each. You should be able to do this with a wizard/few clicks instead of having to manually input 35 satellites.
-- Prettier Earth. Earth is represented as a green sphere using R3F. This could be textured for a nicer look.
+- ~~Prettier Earth. Earth is represented as a green sphere using R3F. This could be textured for a nicer look.~~ **Done 02/23/2022**. There was an online tutorial on how to do exactly this with R3f, so I essentially was able to copy the code over.
 - Celestial body selection. We are interested in simulating orbits not just around the Earth, but also around the Moon, Mars, the Sun, Venus, etc.
 - Conversion between apoapsis/periapsis and semimajor axis. I think that describing an orbit using the former terms is more intuitive than describing it with the semimajor axis. Input should be allowed either way.
 - Spacecraft attitude. A basic description of where each satellite is pointing should be stored in each orbit. We should also allow for the orbiting body to "track" in many ways, either by remaining fixed (no attitude control) or continuously pointing at some fixed point or directly down at the celestial body.
@@ -47,3 +47,4 @@ FOE isn't really in a state yet where the user will be happy with using it. Howe
 # Credits
 
 - Thank you to www.solarsystemscope.com for the planet textures. https://www.solarsystemscope.com/textures/
+- Thank you to https://github.com/ipenywis/react-3d-earth/tree/master/src for pretty-Earth code
