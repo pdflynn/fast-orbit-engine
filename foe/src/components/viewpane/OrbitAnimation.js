@@ -16,6 +16,9 @@ const OrbitAnimation = ({ts, xs, ys, zs, color}) => {
     const dt = ts[1] - ts[0];
     var currentIndx = 0;
     
+    // TODO: not sure if these if statements could be causing performance issues
+    // maybe a better way to do animations while still maintaining time accuracy
+    
     // Occurs every frame
     useFrame(() => {
         globalTime = getGlobalTime();

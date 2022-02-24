@@ -147,4 +147,5 @@ class Orbit():
             step += 1
         ts = ts[:, 0]  # needed to avoid array of 1-element arrays
 
+        # TODO: Is the orbit being propagated wrong? Orbits appear retrograde...
         return ys, ts

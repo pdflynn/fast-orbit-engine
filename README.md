@@ -16,9 +16,12 @@ The FOE interface is split into three distinct areas:
 
 # Current Features
 
-- Fully-functional two-body orbital mechanics engine supporting an arbitrary number of small bodies orbiting a single large body (hardcoded as Earth for now).
+- ~~Fully-functional~~ Somewhat broken two-body orbital mechanics engine supporting an arbitrary number of small bodies orbiting a single large body (hardcoded as Earth for now).
 - Simulation time adjustment, allowing the user to increase/decrease the rate of the simulation. Time should theoretically be independent of framerate with the way this is programmed.
 - Adding/removing individual orbits, which are specified using 6 Keplerian [orbital elements](https://en.wikipedia.org/wiki/Orbital_elements).
+- 8K Textured Earth with normal maps and specular maps
+- Background stars (not accurate to Milky Way) that can be turned on/off
+- Rotating Earth with a period of one sidereal day (approximately 24h, 56m, 4s).
 
 # Upcoming Features
 
@@ -32,11 +35,14 @@ This list is intended to capture my intent for FOE in its near-future developmen
 - Conversion between apoapsis/periapsis and semimajor axis. I think that describing an orbit using the former terms is more intuitive than describing it with the semimajor axis. Input should be allowed either way.
 - Spacecraft attitude. A basic description of where each satellite is pointing should be stored in each orbit. We should also allow for the orbiting body to "track" in many ways, either by remaining fixed (no attitude control) or continuously pointing at some fixed point or directly down at the celestial body.
 - Field of view calculation and visualization. Since celestial bodies are assumed to be perfectly spherical in this engine, the calculation of a satellite's field-of-view should be relatively trivial. We would also like to visualize this on the celestial body.
+- ~~Make the Earth and other celestial bodies rotate. This seems like an obvious one, but the Earth rotates as object orbit. We can then define positions in the geocentric equatorial coordinate system (x-axis points towards the vernal equinox, z-axis along Earth's axis)~~ **Done 02/23/2022**. Basic rotation is implemented and time-accurate, but this introduced a strange bug.
 
 # Known Bugs
 
 - Some orbits fail to propagate, yielding a divide-by-zero error or similar. One example problematic orbit is (Semimajor axis: 7200 km; Eccentricity: 0 deg; Inclination: 80 deg; Right Ascension of the Ascending Node: 0 deg; Argument of Periapsis: 0 deg; True Anomaly at Epoch: 0 deg). I think this issue has to do with high-inclination orbits and I will need to check out the ODE solver.
 - ~~Upon cancelling the "add orbit" window by double clicking the screen, all orbits disappear for a split second and then reappear~~ Ignoring this for now, it's just a small graphical bug that isn't really noticable on fast PCs.
+- When we press "Add Orbit," "Hide Stars," or exit the add orbit menu (by cancelling or by adding an orbit) the Earth spins much faster for a few seconds but the orbits maintain their time-accurate course.
+- Orbits appear to propagate in the retrograde direction. An orbit with an inclination of 0 should travel in the same direction as the rotation of the Earth. However, orbits travel in the opposite direction.
 
 # Installation
 

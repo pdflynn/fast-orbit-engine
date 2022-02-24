@@ -114,11 +114,11 @@ function App() {
             <color attach="background" args={["black"]} />
             <OrbitControls minDistance={10} maxDistance={75} enablePan={false}/>
 
-            {showStars ? <Stars radius={150} depth={80} count={2000} factor={3} saturation={0.4}/> : ''}
+            {showStars ? <Stars radius={10} depth={80} count={2000} factor={3} saturation={0.4}/> : ''}
 
-            <ambientLight intensity={0.8} />
+            <ambientLight intensity={0.05} />
             {/* <Sphere radius={R_EARTH} /> */}
-            <Planet radius={R_EARTH} />
+            <Planet radius={R_EARTH} siderealDay={86164.1} />
             <spotLight position={[150, 0, 0]} intensity={1}/>
 
             {orbitVisualizations.length > 0 ? <OrbitVisualizations orbitTraces={orbitVisualizations}/> : ''}
