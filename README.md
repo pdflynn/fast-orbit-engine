@@ -36,6 +36,9 @@ This list is intended to capture my intent for FOE in its near-future developmen
 - Spacecraft attitude. A basic description of where each satellite is pointing should be stored in each orbit. We should also allow for the orbiting body to "track" in many ways, either by remaining fixed (no attitude control) or continuously pointing at some fixed point or directly down at the celestial body.
 - Field of view calculation and visualization. Since celestial bodies are assumed to be perfectly spherical in this engine, the calculation of a satellite's field-of-view should be relatively trivial. We would also like to visualize this on the celestial body.
 - ~~Make the Earth and other celestial bodies rotate. This seems like an obvious one, but the Earth rotates as object orbit. We can then define positions in the geocentric equatorial coordinate system (x-axis points towards the vernal equinox, z-axis along Earth's axis)~~ **Done 02/23/2022**. Basic rotation is implemented and time-accurate, but this introduced a strange bug.
+- Orbit propagator: I could rewrite this using a different method. Right now, everything is set up in a Cartesian coordinate system. But since this is just a Keplerian propagator, why not rewrite the engine to just propagate using Kepler's equation? Then, coordinates can be transformed to the geocentric equatorial coordinate system in Cartesian coordinates or right ascension/declanation. This might fix some of the known bugs (especially with high-inclination orbits)
+- Satellite icon replacement. Satellites are currently displayed as spheres, but this should change to a "prettier" icon (or ideally we should allow the user to select what icon they want).
+- Satellite "grouping" / organization in the control pane. If we have 80 satellites in different orbital planes, we probably want to organize them by orbital plane and not just have a really long scrollbar of unrelated orbits.
 
 # Known Bugs
 
