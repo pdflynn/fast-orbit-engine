@@ -35,8 +35,8 @@ This list is intended to capture my intent for FOE in its near-future developmen
 
 # Known Bugs
 
-- Some orbits fail to propagate, yielding a divide-by-zero error or similar (TODO: reproduce a known erroring orbit).
-- Upon cancelling the "add orbit" window by double clicking the screen, all orbits disappear for a split second and then reappear
+- Some orbits fail to propagate, yielding a divide-by-zero error or similar. One example problematic orbit is (Semimajor axis: 7200 km; Eccentricity: 0 deg; Inclination: 80 deg; Right Ascension of the Ascending Node: 0 deg; Argument of Periapsis: 0 deg; True Anomaly at Epoch: 0 deg). I think this issue has to do with high-inclination orbits and I will need to check out the ODE solver.
+- ~~Upon cancelling the "add orbit" window by double clicking the screen, all orbits disappear for a split second and then reappear~~ Ignoring this for now, it's just a small graphical bug that isn't really noticable on fast PCs.
 
 # Installation
 

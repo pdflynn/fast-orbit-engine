@@ -23,7 +23,6 @@ const Orbit = ({orbit, onDelete, onToggle}) => {
                     <td>&omega; = {orbit.argp} (deg)</td>
                     <td>&theta; = {orbit.tra} (deg)</td>
                 </tr>
-
             </table>
 
         </div>
