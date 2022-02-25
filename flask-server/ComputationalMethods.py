@@ -3,6 +3,8 @@ import numpy as np
 # From Alfonso Gonzalez: Newton's method of root-solving a
 # single variable function.
 # https://www.youtube.com/watch?v=zNd-sRzA7b8
+
+
 def newtons_single(f, f_prime, x0, tol=1e-9, args=[]):
     n = 1
     dx = f(x0, args) / f_prime(x0, args)
@@ -31,3 +33,11 @@ def orbit_ode(t, y, mu):
     ax, ay, az = -r*mu/norm_r**3
 
     return [vx, vy, vz, ax, ay, az]
+
+
+# Gets the distance to the origin in an N-dimensional vector
+def get_distance(row):
+    tot = 0
+    for num in row:
+        tot += num**2
+    return np.sqrt(tot)

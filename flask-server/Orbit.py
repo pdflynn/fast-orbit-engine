@@ -22,7 +22,7 @@ class Orbit():
 
     """
 
-    def __init__(self, sma, ecc, inc, raan, argp, tra, sgp=fc.MU_EARTH, epoch=0):
+    def __init__(self, sma, ecc, inc, raan, argp, tra, sgp=fc.MU_EARTH, epoch=0, radius=fc.R_EARTH):
         """Initializes a new two-body Keplerian orbit.
 
         Parameters
@@ -52,6 +52,7 @@ class Orbit():
         self.tra = tra
         self.sgp = sgp
         self.epoch = epoch
+        self.radius = radius
 
     def get_cartesian(self):
         """Returns the Cartesian state vector in geocentric-equatorial reference.
@@ -147,5 +148,25 @@ class Orbit():
             step += 1
         ts = ts[:, 0]  # needed to avoid array of 1-element arrays
 
-        # TODO: Is the orbit being propagated wrong? Orbits appear retrograde...
         return ys, ts
+
+    def get_fov(self):
+        """
+        Returns the satellite field of view in terms of arc length, angle, and cone r and h
+        See documentation for definitions of:
+        l_arc:  The arc length along the surface of the Earth of the satellite FOV
+        theta:  The angle from the center of the Earth to the line from the center of the
+                Earth to the 0 degree elevation points
+        r_cone: The radius of a cone describing the FOV
+        h_cone: The height of a cone describing the FOV
+        """
+        ys, ts = self.propagate()
+        # rs is R_E + h (i.e. the current distance from the satellite to the origin)
+        rs = np.apply_along_axis(cm.get_distance, 1, ys)
+        theta = np.arccos(self.radius / rs)
+        l_arc = self.radius * theta
+        h_cone = self.radius * (1 - np.cos(theta)) + rs
+        delta_h = self.radius * np.cos(theta)
+        r_cone = np.sqrt(self.radius**2 - delta_h**2)
+
+        return l_arc, theta, r_cone, h_cone

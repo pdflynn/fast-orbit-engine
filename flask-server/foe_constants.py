@@ -15,6 +15,9 @@ MU_NEPTUNE = 6.836529e15
 MU_PLUTO = 8.71e11
 MU_ERIS = 1.108e12
 
+# Average radii of celestial bodies, in m
+R_EARTH = 6378137
+
 MU_DICT = {
     'sun': MU_SUN,
     'mercury': MU_MERCURY,
@@ -28,5 +31,5 @@ MU_DICT = {
     'uranus': MU_URANUS,
     'neptune': MU_NEPTUNE,
     'pluto': MU_PLUTO,
-    'eris': MU_ERIS,    
+    'eris': MU_ERIS,
 }
