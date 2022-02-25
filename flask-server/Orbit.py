@@ -105,7 +105,7 @@ class Orbit():
         T = 2*np.pi*np.sqrt((self.sma**3)/self.sgp)
         return T
 
-    def propagate(self, Nperiods=1, dt=60, integrator='lsoda'):
+    def propagate(self, Nperiods=1, dt=60, integrator='dopri5'):
         """Propagates the orbit, returning a Cartesian state vector and time.
 
         Parameters

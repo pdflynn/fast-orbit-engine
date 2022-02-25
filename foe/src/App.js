@@ -14,7 +14,7 @@ import ShowAddOrbit from "./components/control-pane/ShowAddOrbit";
 import ShowStars from "./components/control-pane/ShowStars";
 
 // dummy data. TODO: pull planetary radii from FOE backend API
-const R_EARTH = 6.371;
+const R_EARTH = 6.378137;
 var TIME_CONST = 1000; // hundreds of seconds per second of simulation time
 
 // Time variable increases by 10 every 10 ms.

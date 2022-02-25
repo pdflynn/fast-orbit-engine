@@ -26,7 +26,7 @@ def new_orbit():
         new_orbit = Orbit(
             float(data.get('sma'))*1e3,
             float(data.get('ecc')),
-            np.deg2rad(float(data.get('inc'))),
+            np.deg2rad(float(data.get('inc')) + 180),
             np.deg2rad(float(data.get('raan'))),
             np.deg2rad(float(data.get('argp'))),
             np.deg2rad(float(data.get('tra')))
