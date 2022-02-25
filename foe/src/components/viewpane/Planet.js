@@ -18,10 +18,11 @@ const Planet = ({radius, siderealDay}) => {
     );
 
     // counting variables
+    const updatePeriod = 30; // Update every updatePeriod seconds
     var nextTime = 0;
     var globalTime = getGlobalTime();
     var angularVelocity = (2*Math.PI) / siderealDay; // rad per sec
-    var changePerMin = angularVelocity * 60; // rad per min
+    var changePerUpdatePeriod = angularVelocity * updatePeriod; // rad per min
 
     const planetRef = useRef();
     const cloudsRef = useRef();
@@ -30,9 +31,13 @@ const Planet = ({radius, siderealDay}) => {
     useFrame(() => {
         globalTime = getGlobalTime();
         if (globalTime > nextTime) {
-            planetRef.current.rotation.y += changePerMin;
-            cloudsRef.current.rotation.y += changePerMin;
-            nextTime += 60;
+            // planetRef.current.rotation.y += changePerUpdatePeriod;
+            // cloudsRef.current.rotation.y += changePerUpdatePeriod;
+            planetRef.current.rotation.y = (planetRef.current.rotation.y + changePerUpdatePeriod) % (2*Math.PI);
+            cloudsRef.current.rotation.y = (planetRef.current.rotation.y + changePerUpdatePeriod) % (2*Math.PI);
+            // console.log(globalTime, nextTime);
+            nextTime = globalTime + updatePeriod;
+            // console.log("Rotation: " + planetRef.current.rotation.y);
         }
 
 
@@ -41,7 +46,7 @@ const Planet = ({radius, siderealDay}) => {
     return (
         <>
             <mesh ref={cloudsRef} position={[0, 0, 0]}>
-                <sphereGeometry args={[1.005*radius, 32, 32]} />
+                <sphereGeometry args={[1.005*radius, 64, 64]} />
                 <meshPhongMaterial
                     map={cloudsMap}
                     opacity={0.4}
@@ -51,7 +56,7 @@ const Planet = ({radius, siderealDay}) => {
                 />
             </mesh>
             <mesh ref={planetRef} position={[0, 0, 0]}>
-                <sphereGeometry args={[radius, 32, 32]} />
+                <sphereGeometry args={[radius, 64, 64]} />
                 <meshPhongMaterial specularMap={specularMap} />
                 <meshStandardMaterial
                     map={colorMap}
