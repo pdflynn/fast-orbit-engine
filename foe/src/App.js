@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import "./styles.css";
+import Axes from "./components/viewpane/Axes";
 import Sphere from "./components/viewpane/Sphere";
 import Planet from "./components/viewpane/Planet";
 import OrbitTrace from "./components/viewpane/OrbitTrace";
@@ -113,16 +114,14 @@ function App() {
           <Canvas gl={{antialias: true}}>
             <color attach="background" args={["black"]} />
             <OrbitControls minDistance={10} maxDistance={75} enablePan={false}/>
-
             {showStars ? <Stars radius={20} depth={80} count={2000} factor={3} saturation={0.4}/> : ''}
-
             <ambientLight intensity={0.05} />
             {/* <Sphere radius={R_EARTH} /> */}
             <Planet radius={R_EARTH} siderealDay={86164.1} />
             <spotLight position={[150, 0, 0]} intensity={1}/>
-
             {orbitVisualizations.length > 0 ? <OrbitVisualizations orbitTraces={orbitVisualizations}/> : ''}
-
+            <Axes length={R_EARTH*1.35}/>
+            
           </Canvas>
         </div>
       </Suspense>

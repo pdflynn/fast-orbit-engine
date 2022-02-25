@@ -30,6 +30,7 @@ This list pulls from "Upcoming Features," see below.
 - ~~Revamping the look of each orbit in the control pane (currently each orbit looks to large imo, on a 1080p screen you can only fit 4).~~ **Done 02/23/2022**. Added a scrollbar. They are still too big imo but this is a lower priority now.
 - ~~Prettier Earth. Earth is represented as a green sphere using R3F. This could be textured for a nicer look.~~ **Done 02/23/2022**. There was an online tutorial on how to do exactly this with R3f, so I essentially was able to copy the code over.
 - ~~Make the Earth and other celestial bodies rotate. This seems like an obvious one, but the Earth rotates as object orbit. We can then define positions in the geocentric equatorial coordinate system (x-axis points towards the vernal equinox, z-axis along Earth's axis)~~ **Done 02/23/2022**. Basic rotation is implemented and time-accurate, but this introduced a strange bug.
+- ~~XYZ axes indicator~~ **Done 02/24/2022**. I think WebGL uses a left-handed coordinate system, that could also maybe be causing issues with the directions of orbits?
 
 # Upcoming Features
 
