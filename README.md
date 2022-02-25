@@ -1,4 +1,4 @@
-![FOEInterface](https://raw.githubusercontent.com/pdflynn/fast-orbit-engine/main/foe_logo.png)
+![FOELogo](https://raw.githubusercontent.com/pdflynn/fast-orbit-engine/main/foe_logo.png)
 
 # Description
 
