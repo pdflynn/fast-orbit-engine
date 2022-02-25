@@ -49,8 +49,8 @@ This list is intended to capture my intent for FOE in its near-future developmen
 
 - Some orbits fail to propagate, yielding a divide-by-zero error or similar. One example problematic orbit is (Semimajor axis: 7200 km; Eccentricity: 0 deg; Inclination: 80 deg; Right Ascension of the Ascending Node: 0 deg; Argument of Periapsis: 0 deg; True Anomaly at Epoch: 0 deg). I think this issue has to do with high-inclination orbits and I will need to check out the ODE solver.
 - ~~Upon cancelling the "add orbit" window by double clicking the screen, all orbits disappear for a split second and then reappear~~ Ignoring this for now, it's just a small graphical bug that isn't really noticable on fast PCs.
-- When we press "Add Orbit," "Hide Stars," or exit the add orbit menu (by cancelling or by adding an orbit) the Earth spins much faster for a few seconds but the orbits maintain their time-accurate course.
-- Orbits appear to propagate in the retrograde direction. An orbit with an inclination of 0 should travel in the same direction as the rotation of the Earth. However, orbits travel in the opposite direction.
+- ~~When we press "Add Orbit," "Hide Stars," or exit the add orbit menu (by cancelling or by adding an orbit) the Earth spins much faster for a few seconds but the orbits maintain their time-accurate course.~~ **02/24/2022**: Fixed, but there are still some issues with Earth's rotation speed when approaching large simulation times (greater than ~5000x)
+- Orbits appear to propagate in the retrograde direction. An orbit with an inclination of 0 should travel in the same direction as the rotation of the Earth. However, orbits travel in the opposite direction. **Update 02/24/2022**: Temporary fix by adding 180 to all inclinations. But I still think something is wrong with the propagator.
 
 # Installation
 

@@ -70,7 +70,7 @@ const AddOrbit = ({ onAdd, onClose}) => {
                     <div className='orbit'>
                         <label>Inclination (in deg)</label>
                         <br/>
-                        <input type='number' placeholder='e.g. 90' value={inc} onChange={(e) => setInc(e.target.value)}/>
+                        <input type='number' placeholder='e.g. 90' value={inc + 180} onChange={(e) => setInc(e.target.value)}/>
                     </div>
                     <div className='orbit'>
                         <label>Right Ascension of the Ascending Node (deg)</label>
