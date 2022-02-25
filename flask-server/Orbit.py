@@ -123,8 +123,8 @@ class Orbit():
         tspan = Nperiods*self.get_orbital_period()
         actual_steps = int(np.ceil(tspan/dt) + 1)
 
-        ys = np.zeros((actual_steps, 6))  # State vector initialization
-        ts = np.zeros((actual_steps, 1))  # Time vector initialization
+        self.ys = np.zeros((actual_steps, 6))  # State vector initialization
+        self.ts = np.zeros((actual_steps, 1))  # Time vector initialization
 
         # Initial conditions
         x0, y0, z0, vx0, vy0, vz0 = self.get_cartesian()
@@ -132,7 +132,7 @@ class Orbit():
         v0 = [vx0, vy0, vz0]
 
         y0 = r0 + v0  # Concatenate lists
-        ys[0] = np.array(y0)  # Convert to Numpy array
+        self.ys[0] = np.array(y0)  # Convert to Numpy array
 
         # Solve using scipy integration
         step = 1
@@ -143,12 +143,12 @@ class Orbit():
 
         while solver.successful() and step < actual_steps:
             solver.integrate(solver.t + dt)
-            ts[step] = solver.t
-            ys[step] = solver.y
+            self.ts[step] = solver.t
+            self.ys[step] = solver.y
             step += 1
-        ts = ts[:, 0]  # needed to avoid array of 1-element arrays
+        self.ts = self.ts[:, 0]  # needed to avoid array of 1-element arrays
 
-        return ys, ts
+        return self.ys, self.ts
 
     def get_fov(self):
         """
@@ -160,9 +160,10 @@ class Orbit():
         r_cone: The radius of a cone describing the FOV
         h_cone: The height of a cone describing the FOV
         """
-        ys, ts = self.propagate()
+        if self.ys is not None:
+            self.ys, self.ts = self.propagate()
         # rs is R_E + h (i.e. the current distance from the satellite to the origin)
-        rs = np.apply_along_axis(cm.get_distance, 1, ys)
+        rs = np.apply_along_axis(cm.get_distance, 1, self.ys)
         theta = np.arccos(self.radius / rs)
         l_arc = self.radius * theta
         h_cone = self.radius * (1 - np.cos(theta)) + rs
