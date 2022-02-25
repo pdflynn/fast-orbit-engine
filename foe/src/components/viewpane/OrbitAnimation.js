@@ -28,18 +28,18 @@ const OrbitAnimation = ({ts, xs, ys, zs, color}) => {
 
         // Only update if we've passed the appropriate time
         if (timeInOrbit >= nextTime) {
-            myMesh.current.position.x = xs[currentIndx];
+            myMesh.current.position.x = ys[currentIndx];
             myMesh.current.position.y = zs[currentIndx];
-            myMesh.current.position.z = ys[currentIndx];
+            myMesh.current.position.z = xs[currentIndx];
             nextTime = ts[currentIndx]
             // Handle wrapping around back to the beginning of array
             if (currentIndx>=ts.length) {
                 numOrbits++;
                 // console.log(numOrbits); // for debug: log orbit ticker
                 nextTime = ts[0]; // reset time to 0
-                myMesh.current.position.x = xs[0];
+                myMesh.current.position.x = ys[0];
                 myMesh.current.position.y = zs[0];
-                myMesh.current.position.z = ys[0];
+                myMesh.current.position.z = xs[0];
                 currentIndx = 0; // reset index to 0
             }
 

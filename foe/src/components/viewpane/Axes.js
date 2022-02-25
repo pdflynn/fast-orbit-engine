@@ -1,9 +1,10 @@
 import * as THREE from 'three'
 
 const Axes = ({length}) => {
+    //  IT'S Y-Z-X: left handed coordinate system!!!
     const origin = new THREE.Vector3(0, 0, 0);
-    const xVec = new THREE.Vector3(length, 0, 0);
-    const yVec = new THREE.Vector3(0, 0, length);
+    const xVec = new THREE.Vector3(0, 0, length);
+    const yVec = new THREE.Vector3(length, 0, 0);
     const zVec = new THREE.Vector3(0, length, 0);
 
     const xPts = [origin, xVec];

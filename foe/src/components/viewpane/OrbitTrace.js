@@ -7,7 +7,7 @@ import * as THREE from 'three'
 const OrbitTrace = ({xs, ys, zs, color}) => {
     // Merges x,y,z point lists into an array of Float32Arrays which can
     // be iterated through to produce THREE Vector3 objects
-    const vertices = xs.map((item, i) => {return Float32Array.from([item, zs[i], ys[i]])})
+    const vertices = ys.map((item, i) => {return Float32Array.from([item, zs[i], xs[i]])})
 
     // Turn coordinates into Vector3 objects
     const points = [];
