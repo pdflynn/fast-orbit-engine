@@ -150,7 +150,7 @@ class Orbit():
 
         return self.ys, self.ts
 
-    def get_fov(self):
+    def get_fov(self, dt=60):
         """
         Returns the satellite field of view in terms of arc length, angle, and cone r and h
         See documentation for definitions of:
@@ -161,13 +161,13 @@ class Orbit():
         h_cone: The height of a cone describing the FOV
         """
         if self.ys is not None:
-            self.ys, self.ts = self.propagate()
+            self.ys, self.ts = self.propagate(dt=dt)
         # rs is R_E + h (i.e. the current distance from the satellite to the origin)
         rs = np.apply_along_axis(cm.get_distance, 1, self.ys)
         theta = np.arccos(self.radius / rs)
         l_arc = self.radius * theta
-        h_cone = self.radius * (1 - np.cos(theta)) + rs
+        h_cone = self.radius * (1 - np.cos(theta)) + (rs - self.radius)
         delta_h = self.radius * np.cos(theta)
         r_cone = np.sqrt(self.radius**2 - delta_h**2)
 
-        return l_arc, theta, r_cone, h_cone
+        return l_arc, theta, r_cone, h_cone, delta_h

@@ -32,11 +32,18 @@ def new_orbit():
             np.deg2rad(float(data.get('tra')))
         )
         ys, ts = new_orbit.propagate(dt=30)
+        l_arc, theta, r_cone, h_cone, delta_h = new_orbit.get_fov(dt=30)
         rs = ys[:, :3]
         # divide by 1 million for coordinates of simulation (vs actual coords)
         x = rs[:, 0] / 1e6
         y = rs[:, 1] / 1e6
         z = rs[:, 2] / 1e6
+
+        l_arc *= 1e-6
+        theta = np.rad2deg(theta)
+        r_cone *= 1e-6
+        h_cone *= 1e-6
+        delta_h *= 1e-6
 
     return jsonify(
         {
@@ -45,6 +52,11 @@ def new_orbit():
             'x': x.tolist(),
             'y': y.tolist(),
             'z': z.tolist(),
+            'l_arc': l_arc.tolist(),
+            'theta': theta.tolist(),
+            'r_cone': r_cone.tolist(),
+            'h_cone': h_cone.tolist(),
+            'delta_h': delta_h.tolist(),
         })
 
 
