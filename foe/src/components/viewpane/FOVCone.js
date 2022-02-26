@@ -26,7 +26,7 @@ const FOVCone = ({ ts, xs, ys, zs, r_cone, h_cone, delta_h, color }) => {
         // Only update if we've passed the appropriate time
         if (timeInOrbit >= nextTime) {
             coneMesh.current.geometry.dispose(); // reference to the old one so we can clean up GPU memory
-            coneMesh.current.geometry = new THREE.ConeBufferGeometry(r_cone[currentIndx], h_cone[currentIndx], 64);
+            coneMesh.current.geometry = new THREE.ConeBufferGeometry(r_cone[currentIndx] + 0.015, h_cone[currentIndx], 64);
             // oldCone.dispose(); // delete the old geometry
             // these three lines just make the -z axis of the cone look at the origin
             var lookVector = new THREE.Vector3(-ys[currentIndx], -zs[currentIndx], -xs[currentIndx]);
@@ -46,7 +46,7 @@ const FOVCone = ({ ts, xs, ys, zs, r_cone, h_cone, delta_h, color }) => {
                 numOrbits++;
                 nextTime = ts[0]; // reset time to 0
                 coneMesh.current.geometry.dispose();
-                coneMesh.current.geometry = new THREE.ConeBufferGeometry(r_cone[0], h_cone[0], 64);
+                coneMesh.current.geometry = new THREE.ConeBufferGeometry(r_cone[0] + 0.015, h_cone[0], 64);
 
                 var r = new THREE.Vector3(xs[0] / 2, ys[0] / 2, zs[0] / 2);
                 var r_hat = r.clone().normalize();
@@ -65,7 +65,7 @@ const FOVCone = ({ ts, xs, ys, zs, r_cone, h_cone, delta_h, color }) => {
             <meshBasicMaterial  
                 color={color}
                 transparent={true}
-                opacity={0.5}
+                opacity={0.15}
                 open={true}
             />
         </mesh>

@@ -46,7 +46,7 @@ const Planet = ({radius, siderealDay}) => {
     return (
         <>
             <mesh ref={cloudsRef} position={[0, 0, 0]}>
-                <sphereGeometry args={[1.005*radius, 64, 64]} />
+                <sphereGeometry args={[1.001*radius, 64, 64]} />
                 <meshPhongMaterial
                     map={cloudsMap}
                     opacity={0.4}

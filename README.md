@@ -21,7 +21,8 @@ The FOE interface is split into three distinct areas:
 - Adding/removing individual orbits, which are specified using 6 Keplerian [orbital elements](https://en.wikipedia.org/wiki/Orbital_elements).
 - 8K Textured Earth with normal maps and specular maps
 - Background stars (not accurate to Milky Way) that can be turned on/off
-- Rotating Earth with a period of one sidereal day (approximately 24h, 56m, 4s).
+- Rotating Earth with a period of one sidereal day (approximately 23h, 56m, 4s).
+- Accurate orbital field of view calculation and visualization per position in the orbit.
 
 # Recently Added
 
@@ -31,19 +32,23 @@ This list pulls from "Upcoming Features," see below.
 - ~~Prettier Earth. Earth is represented as a green sphere using R3F. This could be textured for a nicer look.~~ **Done 02/23/2022**. There was an online tutorial on how to do exactly this with R3f, so I essentially was able to copy the code over.
 - ~~Make the Earth and other celestial bodies rotate. This seems like an obvious one, but the Earth rotates as object orbit. We can then define positions in the geocentric equatorial coordinate system (x-axis points towards the vernal equinox, z-axis along Earth's axis)~~ **Done 02/23/2022**. Basic rotation is implemented and time-accurate, but this introduced a strange bug.
 - ~~XYZ axes indicator~~ **Done 02/24/2022**. ~~I think WebGL uses a left-handed coordinate system, that could also maybe be causing issues with the directions of orbits?~~ **Yes, that was the issue**.
+- ~~Field of view calculation and visualization. Since celestial bodies are assumed to be perfectly spherical in this engine, the calculation of a satellite's field-of-view should be relatively trivial. We would also like to visualize this on the celestial body.~~ **Added 02/25/2022**.
 
 # Upcoming Features
 
 This list is intended to capture my intent for FOE in its near-future development. I have a ton of ideas so this is by no means an exhaustive list. My real intent with this application is to build a basis for a future satellite communication simulator, so once these features are in the empasis will be less on the "GNC" features and more on the communications features. I am also extremely busy with my senior year of undergrad so no promises on development time.
 
 - Color-coding individual orbits according to color palette input.
+- Turning on/off the visualization options such as the satellite FOV cones
 - Mass orbital insertion. Say you want to populate one orbital plane with 35 satellites separated by 10 degrees each. You should be able to do this with a wizard/few clicks instead of having to manually input 35 satellites.
 - Celestial body selection. We are interested in simulating orbits not just around the Earth, but also around the Moon, Mars, the Sun, Venus, etc.
 - Conversion between apoapsis/periapsis and semimajor axis. I think that describing an orbit using the former terms is more intuitive than describing it with the semimajor axis. Input should be allowed either way.
 - Spacecraft attitude. A basic description of where each satellite is pointing should be stored in each orbit. We should also allow for the orbiting body to "track" in many ways, either by remaining fixed (no attitude control) or continuously pointing at some fixed point or directly down at the celestial body.
-- Field of view calculation and visualization. Since celestial bodies are assumed to be perfectly spherical in this engine, the calculation of a satellite's field-of-view should be relatively trivial. We would also like to visualize this on the celestial body.
 - Satellite icon replacement. Satellites are currently displayed as spheres, but this should change to a "prettier" icon (or ideally we should allow the user to select what icon they want).
 - Satellite "grouping" / organization in the control pane. If we have 80 satellites in different orbital planes, we probably want to organize them by orbital plane and not just have a really long scrollbar of unrelated orbits.
+- Inter-satellite-link (ISL) visibility calculation and visualization. Eventually we want to be working not just with satellites in isolation but networks of satellites. To do this we'll need to ensure that we can determine if two satellites are visible to each other or if they are blocked by the body they are orbiting.
+- Satellite look angle calculation in the back end (and perhaps visualization as well). This should be straightforward to implement since the algorithms are well-known (just need to convert relative coordinates to local azimuth and elevation angles).
+- More detailed documentation explaining the math behind many of the calculations performed by FOE. I currently have a couple-page LaTeX document with nice figures and will upload it in a future commit.
 
 # Known Bugs
 
@@ -51,6 +56,8 @@ This list is intended to capture my intent for FOE in its near-future developmen
 - ~~Upon cancelling the "add orbit" window by double clicking the screen, all orbits disappear for a split second and then reappear~~ Ignoring this for now, it's just a small graphical bug that isn't really noticable on fast PCs.
 - ~~When we press "Add Orbit," "Hide Stars," or exit the add orbit menu (by cancelling or by adding an orbit) the Earth spins much faster for a few seconds but the orbits maintain their time-accurate course.~~ **02/24/2022**: Fixed, but there are still some issues with Earth's rotation speed when approaching large simulation times (greater than ~5000x)
 - ~~Orbits appear to propagate in the retrograde direction. An orbit with an inclination of 0 should travel in the same direction as the rotation of the Earth. However, orbits travel in the opposite direction. **Update 02/24/2022**: Temporary fix by adding 180 to all inclinations. But I still think something is wrong with the propagator.~~ **Update later 02/24/2022**: Fixed completely, had to do with WebGL using a left handed coordinate system.
+- ~~Cone visualizations causing memory leak~~ **Fixed 02/25/2022**. That was pretty application-breaking so had to fix it ASAP. Remove geometries from WebGL after they're no longer in use!
+- Strange graphical bugs appear with overlapping cones, and the cones appear to interact with the clouds on the Earth as well. We might have to remove the Earth cloud mapping for now.
 
 # Installation
 

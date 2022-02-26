@@ -12,7 +12,8 @@ earth_mu = 3.986004418e14
 # # Main script (propagates orbit)
 if __name__ == '__main__':
 
-    orbit1 = Orbit(42164000, 0, np.deg2rad(0), np.deg2rad(0), 0, 0)
+    orbit1 = Orbit(42164000, 0, np.deg2rad(
+        0), np.deg2rad(0), 0, np.deg2rad(240))
     ys1, ts1 = orbit1.propagate(dt=30)
     rs1 = ys1[:, :3]
     l_arc, theta, r_cone, h_cone, delta_h = orbit1.get_fov(dt=30)
@@ -28,47 +29,47 @@ if __name__ == '__main__':
         y = rs1[:, 1] / 1e6
         z = rs1[:, 2] / 1e6
 
-        f.write("const t = [")
+        f.write("[")
         for i in range(0, len(ts1)-1):
             f.write(str(ts1[i]) + ', ')
         f.write(str(ts1[len(ts1)-1]) + '],\n')
 
-        f.write("const x = [")
+        f.write("[")
         for i in range(0, len(x)-1):
             f.write(str(x[i]) + ', ')
         f.write(str(x[len(x)-1]) + '],\n')
 
-        f.write("const y = [")
+        f.write("[")
         for i in range(0, len(y)-1):
             f.write(str(y[i]) + ', ')
         f.write(str(y[len(y)-1]) + '],\n')
 
-        f.write("const z = [")
+        f.write("[")
         for i in range(0, len(z)-1):
             f.write(str(z[i]) + ', ')
         f.write(str(z[len(z)-1]) + '],\n')
 
-        f.write("const l_arc = [")
+        f.write("[")
         for i in range(0, len(l_arc)-1):
             f.write(str(l_arc[i]) + ', ')
         f.write(str(l_arc[len(l_arc)-1]) + '],\n')
 
-        f.write("const theta = [")
+        f.write("[")
         for i in range(0, len(theta)-1):
             f.write(str(theta[i]) + ', ')
         f.write(str(theta[len(theta)-1]) + '],\n')
 
-        f.write("const r_cone = [")
+        f.write("[")
         for i in range(0, len(r_cone)-1):
             f.write(str(r_cone[i]) + ', ')
         f.write(str(r_cone[len(r_cone)-1]) + '],\n')
 
-        f.write("const h_cone = [")
+        f.write("[")
         for i in range(0, len(h_cone)-1):
             f.write(str(h_cone[i]) + ', ')
         f.write(str(h_cone[len(h_cone)-1]) + '],\n')
 
-        f.write("const delta_h = [")
+        f.write("[")
         for i in range(0, len(delta_h)-1):
             f.write(str(delta_h[i]) + ', ')
         f.write(str(delta_h[len(delta_h)-1]) + '],\n')
