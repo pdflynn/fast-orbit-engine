@@ -33,9 +33,13 @@ const FOVCone = ({ ts, xs, ys, zs, r_cone, h_cone, delta_h, color }) => {
             var axis = new THREE.Vector3(0, -1, 0);
             coneMesh.current.quaternion.setFromUnitVectors(axis, lookVector.clone().normalize());
 
-            coneMesh.current.position.x = (ys[currentIndx] / 2);
-            coneMesh.current.position.y = (zs[currentIndx] / 2);
-            coneMesh.current.position.z = (xs[currentIndx] / 2);
+            var r = new THREE.Vector3(xs[currentIndx] / 2, ys[currentIndx] / 2, zs[currentIndx] / 2);
+            var r_hat = r.clone().normalize();
+            
+
+            coneMesh.current.position.x = (0.5*delta_h[currentIndx]*r_hat.y + r.y);
+            coneMesh.current.position.y = (0.5*delta_h[currentIndx]*r_hat.z + r.z);
+            coneMesh.current.position.z = (0.5*delta_h[currentIndx]*r_hat.x + r.x);
             
             nextTime = ts[currentIndx]
             // Handle wrapping around back to the beginning of array
@@ -44,9 +48,11 @@ const FOVCone = ({ ts, xs, ys, zs, r_cone, h_cone, delta_h, color }) => {
                 nextTime = ts[0]; // reset time to 0
                 coneMesh.current.geometry = new THREE.ConeBufferGeometry(r_cone[0], h_cone[0], 64);
 
-                coneMesh.current.position.x = (ys[0] / 2);
-                coneMesh.current.position.y = (zs[0] / 2);
-                coneMesh.current.position.z = (xs[0] / 2);
+                var r = new THREE.Vector3(xs[0] / 2, ys[0] / 2, zs[0] / 2);
+                var r_hat = r.clone().normalize();
+                coneMesh.current.position.x = ((0.5*delta_h[0]*r_hat.y + r.y));
+                coneMesh.current.position.y = ((0.5*delta_h[0]*r_hat.z + r.z));
+                coneMesh.current.position.z = ((0.5*delta_h[0]*r_hat.x + r.x));
                 currentIndx = 0; // reset index to 0
             }
 
@@ -59,7 +65,7 @@ const FOVCone = ({ ts, xs, ys, zs, r_cone, h_cone, delta_h, color }) => {
             <meshBasicMaterial  
                 color={color}
                 transparent={true}
-                opacity={0.05}
+                opacity={0.5}
             />
         </mesh>
     )
