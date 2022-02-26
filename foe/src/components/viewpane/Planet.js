@@ -34,7 +34,7 @@ const Planet = ({radius, siderealDay}) => {
             // planetRef.current.rotation.y += changePerUpdatePeriod;
             // cloudsRef.current.rotation.y += changePerUpdatePeriod;
             planetRef.current.rotation.y = (planetRef.current.rotation.y + changePerUpdatePeriod) % (2*Math.PI);
-            cloudsRef.current.rotation.y = (planetRef.current.rotation.y + changePerUpdatePeriod) % (2*Math.PI);
+            // cloudsRef.current.rotation.y = (planetRef.current.rotation.y + changePerUpdatePeriod) % (2*Math.PI);
             // console.log(globalTime, nextTime);
             nextTime = globalTime + updatePeriod;
             // console.log("Rotation: " + planetRef.current.rotation.y);
@@ -45,7 +45,7 @@ const Planet = ({radius, siderealDay}) => {
 
     return (
         <>
-            <mesh ref={cloudsRef} position={[0, 0, 0]}>
+            {/* <mesh ref={cloudsRef} position={[0, 0, 0]}>
                 <sphereGeometry args={[1.001*radius, 64, 64]} />
                 <meshPhongMaterial
                     map={cloudsMap}
@@ -54,7 +54,7 @@ const Planet = ({radius, siderealDay}) => {
                     transparent={true}
                     side={THREE.DoubleSide}
                 />
-            </mesh>
+            </mesh> */}
             <mesh ref={planetRef} position={[0, 0, 0]}>
                 <sphereGeometry args={[radius, 64, 64]} />
                 <meshPhongMaterial specularMap={specularMap} />
