@@ -12,8 +12,10 @@ import OrbitVisualizations from "./components/viewpane/OrbitVisualizations";
 import SimulationTime from "./components/control-pane/SimulationTime";
 import AddOrbit from "./components/control-pane/AddOrbit";
 import ShowAddOrbit from "./components/control-pane/ShowAddOrbit";
+import SelectPlanet from "./components/control-pane/SelectPlanet";
 import ShowStars from "./components/control-pane/ShowStars";
 import FOVCone from "./components/viewpane/FOVCone";
+import { NoToneMapping } from "three";
 
 // dummy data. TODO: pull planetary radii from FOE backend API
 const R_EARTH = 6.378137;
@@ -40,6 +42,29 @@ function App() {
   }
 
   getGlobalTime();
+
+  const planets = [
+    {
+      id: 0,
+      name: 'Earth',
+      radius: 6.378137,
+      colorMap: "./components/viewpane/planet_textures/8k_earth_daymap.jpg",
+      normalMap: "./components/viewpane/planet_textures/8k_earth_normal_map.jpg",
+      specularMap: "./compnents/viewpane/planet_textures/8k_earth_specular_map.jpg",
+    },
+    {
+      id: 1,
+      name: 'Mars',
+      radius: 3.3962,
+      colorMap: "./components/viewpane/planet_textures/8k_mars.jpg",
+      normalMap: null,
+      specularMap: null,
+    }
+  ];
+
+
+  // Planet selection
+  const [planet, setPlanet] = useState(0);
 
   // Temporary hard-coded orbital parameters
   const [orbits, setOrbits] = useState([
@@ -155,6 +180,7 @@ function App() {
 
         <div className='control-pane'>
             <SimulationTime updateTime = {updateTimeConstant}/>
+            <SelectPlanet currentPlanet='0' planets={planets} onClick={setPlanet}/>
             <ShowAddOrbit title='Add Orbit' onAdd={() => setShowAddOrbit(!showAddOrbit)} showAdd={showAddOrbit}/>
             <ShowStars title='Show Stars' onClick={() => setShowStars(!showStars)} showStars={showStars}/>
             {orbits.length > 0 ? <Orbits orbits={orbits} onDelete={deleteOrbit}/> : 'Add an orbit.'}

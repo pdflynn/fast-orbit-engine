@@ -17,6 +17,7 @@ MU_ERIS = 1.108e12
 
 # Average radii of celestial bodies, in m
 R_EARTH = 6378137
+R_MARS = 3396200
 
 MU_DICT = {
     'sun': MU_SUN,
